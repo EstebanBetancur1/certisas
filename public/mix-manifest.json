@@ -1,0 +1,9 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/js/login.js": "/js/login.js",
+    "/js/register.js": "/js/register.js",
+    "/js/recover-password.js": "/js/recover-password.js",
+    "/js/templates-datatable.js": "/js/templates-datatable.js",
+    "/js/reset-password.js": "/js/reset-password.js"
+}

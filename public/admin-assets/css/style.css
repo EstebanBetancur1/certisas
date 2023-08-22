@@ -1,0 +1,23 @@
+body{
+	font-size: 12px!important;
+}
+
+.ck-editor .ck-editor__main .ck-content {
+    min-height: 300px;
+}
+
+.preview-image > .image{
+    text-align: center;
+}
+
+.preview-image > .image img{
+    margin: 0 auto;
+}
+
+#summary{
+    height: 150px;
+}
+
+.table thead th{
+	text-transform: none;
+}

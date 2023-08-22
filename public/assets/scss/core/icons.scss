@@ -1,0 +1,220 @@
+$icomoon-font-family: "certisaas-icons" !default;
+$icomoon-font-path: "../fonts" !default;
+
+$icon-key: "\e91e";
+$icon-mailbox-2: "\e914";
+$icon-statement: "\e915";
+$icon-add: "\e916";
+$icon-erase: "\e917";
+$icon-import-table: "\e918";
+$icon-issue: "\e919";
+$icon-mailbox: "\e91a";
+$icon-arrow-down: "\e900";
+$icon-arrow-left: "\e901";
+$icon-arrow-right: "\e902";
+$icon-arrow-up: "\e903";
+$icon-certify: "\e904";
+$icon-check: "\e905";
+$icon-close: "\e906";
+$icon-comments: "\e907";
+$icon-config: "\e908";
+$icon-edit: "\e909";
+$icon-file: "\e90a";
+$icon-filter: "\e90b";
+$icon-load: "\e90c";
+$icon-log-out: "\e90d";
+$icon-search: "\e90e";
+$icon-settings: "\e90f";
+$icon-trash: "\e910";
+$icon-upload: "\e911";
+$icon-user: "\e912";
+$icon-users: "\e913";
+$icon-alert: "\e91b";
+$icon-file-excel: "\e91c";
+$icon-file-pdf: "\e91d";
+
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?9u6ldd');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?9u6ldd#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?9u6ldd') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?9u6ldd') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?9u6ldd##{$icomoon-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-key {
+  &:before {
+    content: $icon-key; 
+  }
+}
+.icon-mailbox-2 {
+  &:before {
+    content: $icon-mailbox-2; 
+  }
+}
+.icon-statement {
+  &:before {
+    content: $icon-statement; 
+  }
+}
+.icon-add {
+  &:before {
+    content: $icon-add; 
+  }
+}
+.icon-erase {
+  &:before {
+    content: $icon-erase; 
+  }
+}
+.icon-import-table {
+  &:before {
+    content: $icon-import-table; 
+  }
+}
+.icon-issue {
+  &:before {
+    content: $icon-issue; 
+  }
+}
+.icon-mailbox {
+  &:before {
+    content: $icon-mailbox; 
+  }
+}
+.icon-arrow-down {
+  &:before {
+    content: $icon-arrow-down; 
+  }
+}
+.icon-arrow-left {
+  &:before {
+    content: $icon-arrow-left; 
+  }
+}
+.icon-arrow-right {
+  &:before {
+    content: $icon-arrow-right; 
+  }
+}
+.icon-arrow-up {
+  &:before {
+    content: $icon-arrow-up; 
+  }
+}
+.icon-certify {
+  &:before {
+    content: $icon-certify; 
+  }
+}
+.icon-check {
+  &:before {
+    content: $icon-check; 
+  }
+}
+.icon-close {
+  &:before {
+    content: $icon-close; 
+  }
+}
+.icon-comments {
+  &:before {
+    content: $icon-comments; 
+  }
+}
+.icon-config {
+  &:before {
+    content: $icon-config; 
+  }
+}
+.icon-edit {
+  &:before {
+    content: $icon-edit; 
+  }
+}
+.icon-file {
+  &:before {
+    content: $icon-file; 
+  }
+}
+.icon-filter {
+  &:before {
+    content: $icon-filter; 
+  }
+}
+.icon-load {
+  &:before {
+    content: $icon-load; 
+  }
+}
+.icon-log-out {
+  &:before {
+    content: $icon-log-out; 
+  }
+}
+.icon-search {
+  &:before {
+    content: $icon-search; 
+  }
+}
+.icon-settings {
+  &:before {
+    content: $icon-settings; 
+  }
+}
+.icon-trash {
+  &:before {
+    content: $icon-trash; 
+  }
+}
+.icon-upload {
+  &:before {
+    content: $icon-upload; 
+  }
+}
+.icon-user {
+  &:before {
+    content: $icon-user; 
+  }
+}
+.icon-users {
+  &:before {
+    content: $icon-users; 
+  }
+}
+.icon-alert {
+  &:before {
+    content: $icon-alert; 
+  }
+}
+.icon-file-excel {
+  &:before {
+    content: $icon-file-excel; 
+  }
+}
+.icon-file-pdf {
+  &:before {
+    content: $icon-file-pdf; 
+  }
+}
+
+

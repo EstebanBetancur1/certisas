@@ -1,0 +1,319 @@
+body{
+	font-family: sans-serif;
+}
+
+/*icomoon icon*/
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?6jpvhd');
+  src:  url('../fonts/icomoon.eot?6jpvhd#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?6jpvhd') format('truetype'),
+    url('../fonts/icomoon.woff?6jpvhd') format('woff'),
+    url('../fonts/icomoon.svg?6jpvhd#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.bg-white{
+    background-color: #f5f5f5!important;
+}
+
+h1 {
+  font-size: 21px;
+  margin-top: 20px;
+}
+
+.btn-home .fa{
+  font-size: 20px;
+}
+
+.page-header-inverse #page-header .nav-main-header a.active{
+   background-color: #cecece;
+   color: #000000;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'icomoon' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.row.gutters-tiny .block, .row.gutters-tiny .push {
+    margin-bottom: 6px;
+    padding-bottom: 50px;
+    padding-top: 27px;
+}
+
+.icon-configure:before {
+	color: #0183CE;
+  content: "\e900";
+  font-size: 60px;
+}
+
+.icon-upload:before {
+	color: #0183CE;
+  content: "\e901";
+  font-size: 60px;
+}
+
+.icon-download:before {
+	color: #0183CE;
+  content: "\e902";
+  font-size: 60px;
+}
+
+.icon-exit:before {
+	color: #0183CE;
+  content: "\e903";
+  font-size: 60px;
+}
+
+.icon-solicitudes:before {
+	color: #0183CE;
+  content: "\e907";
+  font-size: 60px;
+}
+
+.icon-maestras:before {
+	color: #0183CE;
+  content: "\e904";
+  font-size: 60px;
+}
+
+.icon-users:before {
+	color: #0183CE;
+  content: "\e905";
+  font-size: 60px;
+}
+
+.icon-company:before {
+	color: #0183CE;
+  content: "\e906";
+  font-size: 60px;
+}
+
+.bg-primary-dark {
+    
+}
+
+#page-container.page-header-glass.page-header-fixed.page-header-scroll.page-header-inverse #page-header{
+	
+}
+
+.page-header-inverse #page-header .nav-main-header a, .page-header-inverse.page-header-glass.page-header-scroll #page-header .nav-main-header a{
+	color: #ffffff;
+}
+
+.table thead th{
+	font-size: 12px;
+}
+
+.table tbody td{
+	font-size: 12px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0081ff;
+    border-color: #0081ff;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus {
+  color: #fff;
+  background-color: #0081ff;
+  border-color: #0081ff;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #0081ff;
+  border-color: #0081ff;
+}
+
+.btn-primary:not([disabled]):not(.disabled):active {
+  background-color: #0081ff;
+  border-color: #0081ff;
+}
+
+.btn-primary:not([disabled]):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0081ff;
+  background-image: none;
+}
+
+/**********************************************************************/
+
+@media (max-width: 575.98px) {
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+@media (min-width: 1200px) {
+	#page-header .content-header .content-header-section:nth-child(1){
+		width: 40%;
+	}
+
+	.nav-main-header ul a{
+		min-width: 200px;
+	}
+
+  .img-logo {
+    width: 96px;
+  }
+
+  .page-header-scroll .img-logo{
+    width: 53px;
+  }
+
+}
+
+/**********************************************************************/
+
+@media (max-width: 575.98px) {
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+@media (min-width: 1200px) {
+  
+}
+
+/**********************************************************************/
+
+@media (max-width: 575.98px) {
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .content.content-top{
+      padding-top: 76px;
+  }
+
+  .content .push{
+      margin-bottom: 0px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .content.content-top{
+      padding-top: 76px;
+  }
+
+  .content .push{
+      margin-bottom: 0px;
+  }
+
+  #page-container.page-header-fixed #page-header > .content-header {
+      padding-bottom: 30px;
+  }
+}
+
+.companies-select2 .select2-container .select2-selection--single{
+    height: 37px!important;
+}
+
+.select-company .select2-container--default .select2-selection--single{
+    background-color: #0183ce!important;
+}
+
+.select-company .select2-container--default .select2-selection--single .select2-selection__rendered{
+    color: #ffffff!important;
+    line-height: 35px!important;
+    text-align: left;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 5px!important;
+}
+
+.companies-select2 .select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-color: #fff transparent transparent transparent!important;
+}
+
+.p-relative{
+  position: relative;
+}
+
+.loader-container{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  left: 0;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.loader-container.show-loader{
+  display: flex;
+}
+
+.loader-container > div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #323d4c;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 1.3s linear infinite; /* Safari */
+  animation: spin 1.3s linear infinite;
+  margin-bottom: 20px;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

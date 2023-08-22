@@ -1,0 +1,74 @@
+body{
+	font-family: sans-serif;
+}
+
+.block-info-login{
+	margin-top: 10px;
+}
+
+.block-info-login .block{
+	background: rgba(255, 255, 255, 0.9);
+}
+
+.block-info-login .tab-pane{
+	padding-top: 30px;
+}
+
+.block-form-login.bg-white{
+	background: rgba(255, 255, 255, 0.9)!important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0081ff;
+    border-color: #0081ff;
+}
+
+@media (max-width: 575.98px) {
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+@media (min-width: 1200px) {
+  	.block-info-login .block .block-content{
+  		min-height: 400px;
+	}
+
+	.block-form-login{
+		padding-top: 10px;
+	}
+}
+
+
+/**********************************************************************/
+
+@media (max-width: 575.98px) {
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+@media (min-width: 1200px) {
+  
+}

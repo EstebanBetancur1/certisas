@@ -1,0 +1,20 @@
+.table-container table td, .table-container table th{
+    padding: 3px 5px!important;
+}
+
+.table td, .table th {
+    vertical-align: middle!important;
+}
+
+.company-logo{
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 20px;
+    border-right: 1px solid #c0c0c0;
+}
+
+.company-logo img{
+    height: 40px;
+    margin: 0 auto;
+}
