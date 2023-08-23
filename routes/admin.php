@@ -1,5 +1,6 @@
 <?php
 
+Route::get('/', 'DashboardController@index')->name('dashboard.index');
 
 Route::resource('users', 'UsersController')->parameters(['users' => 'id']);
 Route::get('/users/{id}/status/{status}', 'UsersController@status')->name('users.status');
