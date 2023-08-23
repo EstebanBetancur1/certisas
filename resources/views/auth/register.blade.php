@@ -16,7 +16,7 @@
     <!-- jQuery Validation functionality is initialized with .js-validation-signin class in js/pages/op_auth_signin.min.js which was auto compiled from _es6/pages/op_auth_signin.js -->
     <!-- For more examples you can check out https://github.com/jzaefferer/jquery-validation -->
     <form class="js-validation-signin px-30" action="{{ route('auth.user.register.create') }}" method="post" enctype="multipart/form-data">
-
+        @csrf
         <div class="form-group row">
             <div class="col-12">
 
