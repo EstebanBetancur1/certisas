@@ -6,7 +6,7 @@
         <h3 class="black">Iniciar sesión</h3>
     </div>
     <form action="{{ route('auth.complete.register.update', ['token' => $item->token_pre_register]) }}" method="post">
-
+        @csrf
         <div class="cs-field field">
             <label for="signup-fullname" class="bold">Nombre completo</label>
             <input type="text" placeholder="Escriba su nombre" id="signup-fullname" name="full_name" required>
