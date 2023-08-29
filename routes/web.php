@@ -37,3 +37,4 @@ Route::namespace('Admin')->name('admin.')->prefix('admin')->middleware(['auth:ad
     require __DIR__.'/admin.php';
 
 });
+

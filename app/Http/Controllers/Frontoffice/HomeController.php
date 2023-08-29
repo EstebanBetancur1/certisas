@@ -46,4 +46,9 @@ class HomeController extends Controller
             'subject'       => 'required|string',
         ]);
     }
+
+    public function homeredir(){
+        
+        return redirect()->route('backoffice.templates.index');
+    }
 }
