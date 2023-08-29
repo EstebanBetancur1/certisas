@@ -338,7 +338,7 @@ function getPhone($lines){
 }
 
 function getActivities($lines){
-    $line = $lines["11"];
+    $line = $lines["12"];
     $code1 = "";
     $code2 = "";
     $activities = [];
