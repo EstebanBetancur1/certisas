@@ -385,7 +385,7 @@ class CompanyController extends Controller
 
             $originalName = $UploadedFile->getClientOriginalName();
             $extension = strtolower($UploadedFile->getClientOriginalExtension());
-            $size = $UploadedFile->getClientSize();
+            
 
             if ( ! in_array($extension, $allowed_types)) {
                 return [
@@ -394,12 +394,6 @@ class CompanyController extends Controller
                 ];
             }
 
-            if ($size > (int) $max_size * 1024) {
-                return [
-                    'status' => false,
-                    'message' => 'La imagen no puede ser mayor a ('.$max_size.')Kb.'
-                ];
-            }
 
             // Sustituye todo lo que no sea alfanumerico por guion
             $newName = preg_replace('/[^\.a-zA-Z0-9]+/', '-', strtolower($originalName));
