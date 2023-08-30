@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         columnDefs: [{targets: 0, checkboxes: {selectRow: true}},{targets: 5, data: null, defaultContent: '<button class="btn btn-primary">Editar</button>'}],
         select: {style:'multi'},
         order: [['1', 'asc']],
-        columns: [{data: 'id'}, {data: 'nit'}, {data: 'nombre'}, {data: 'documento'}, {data: 'concepto'}],
+        columns: [{data: 'id'}, {data: 'nit'}, {data: 'name'}, {data: 'doc'}, {data: 'concept'}],
         ordering: false,
         language: {url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
     });
