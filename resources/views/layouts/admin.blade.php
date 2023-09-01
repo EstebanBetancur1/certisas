@@ -282,7 +282,7 @@
                         <b>Version</b> 1.0.0
                     </div>
                     <div class="float-left">
-                       <strong>Copyright &copy; 2020. </strong> Todos los derechos reservados
+                       <strong>Copyright &copy; <?php echo date('Y')?>. </strong> Todos los derechos reservados
                     </div>
                 </div>
             </footer>

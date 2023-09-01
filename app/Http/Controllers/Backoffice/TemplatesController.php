@@ -134,19 +134,36 @@ class TemplatesController extends Controller
     }
 
     public function templates(Request $request) {
-        $company = session("companyID");
-        $type = $request->input("type");
-        $year = $request->input("year");
-        $template = $request->input("template");
-    
-        $query = TemplateItem::query()
-            ->where('company_id', $company)
-            ->where('template_id', $template);
+       
+        session()->put('companyID', $request->company);
 
+        if ($request->has('data')) {
+            return Template::select(['id','title as nombre'])->from('templates')->where('status',1)->where('company_id', $request->company)->get()->toJson();
+        } else {
 
-        $relatedData = $query->get();
-    
-        return response()->json($relatedData, 200);
+            Validator::make($request->all(), [
+                'template'  => ['nullable', 'numeric', Rule::in(Template::array())],
+                'type'      => ['required', 'numeric'],
+                'year'      => ['required', 'numeric', Rule::in(getYears())],
+                'company'   => ['required', 'numeric', Rule::in(Company::array())],
+            ])->validate();
+
+            $query = TemplateItem::select(['ti.id as id', 'ti.name as nombre','ti.nit as nit','ti.concept as concepto','ti.doc as documento','ti.date as fecha']);
+            $query = $query->from('template_items as ti');
+
+            if($request->template){
+                $query = $query->where('template_id', $request->template);
+            }
+
+            $query = $query->where('type',$request->type);
+            $query = $query->where('year_process',$request->year);
+            $query = $query->where('company_id',$request->company);
+
+            $query = $query->get();
+
+            return $query->toJson();
+
+        }
     }
     
     

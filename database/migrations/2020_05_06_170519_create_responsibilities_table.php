@@ -17,8 +17,7 @@ class CreateResponsibilitiesTable extends Migration
 	{
 		Schema::create('responsibilities', function(Blueprint $table) {
             $table->increments('id');
-
-            $table->integer('code');
+            $table->unsignedInteger('code');
             $table->string('title');
 
             $table->timestamps();

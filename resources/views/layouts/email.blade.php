@@ -215,7 +215,7 @@
                                                 <table width="100%" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td data-color="text" data-link-color="link text color" data-link-style="text-decoration:underline; color:#797c82;" class="aligncenter" style="font:12px/16px Arial, Helvetica, sans-serif; color:#797c82; padding:0 0 10px;">
-                                                            {!! setting('project', config('app.name', 'Laravel')) !!}, 2020. &nbsp; All Rights Reserved.
+                                                            {!! setting('project', config('app.name', 'Laravel')) !!}, <?php echo date('Y') ?>. &nbsp; All Rights Reserved.
                                                         </td>
                                                     </tr>
                                                 </table>
