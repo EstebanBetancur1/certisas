@@ -11,6 +11,7 @@
     "Forgot Your Password?": "¿Olvidaste Tu Contraseña?",
     "Loading...": "Cargando...",
     "Upload RUT document": "Cargar documento RUT",
+    "Please upload the updated RUT of": "Por favor subir el RUT actualizado de",
     "Select a file": "Selecciona un archivo",
     "By clicking \"Register\", you accept our :terms_and_conditions": "Al hacer clic en \"Registrarme\", aceptas nuestros :terms_and_conditions",
     "Terms and Conditions": "Términos y Condiciones",
@@ -42,8 +43,5 @@
     "Clean Filters": "Limpiar Filtros",
     "Filter": "Filtrar",
     "Import Template": "Importar Plantilla",
-    "Import": "Importar",
-    "": "",
-    "": "",
-    "": ""
+    "Import": "Importar"
 }

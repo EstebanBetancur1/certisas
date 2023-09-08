@@ -624,7 +624,7 @@
     <div class="container">
 
         <div class="copyright">
-            &copy; Copyright <strong><span>Certisaas 2020</span></strong> - Todos los derechos reservados.
+            &copy; Copyright <strong><span>Certisaas <?php date('Y') ?></span></strong> - Todos los derechos reservados.
         </div>
 
     </div>

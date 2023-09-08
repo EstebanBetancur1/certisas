@@ -31,7 +31,7 @@
 <body>
     <section id="login">
         <div class="container" id="c1">
-            <div class="row">
+            <div class="row" style="height: 630px">
                 <div class="col-md-7 p-0">
                     <div id="registro" class="login-wrapper">
                         <div class="login-logo">
@@ -78,11 +78,19 @@
             </div>
         </div>
         <div id="c2" class="container move2">
-            <div class="row overflow-hidden">
+            <div class="row overflow-hidden" style="height: 630px">
               <div class="col-md-7 p-0">
                 <div id="registro" class="login-wrapper">
                   <div class="login-logo">
                     <img class="logo" src="images/logo.svg" alt="">
+                  </div>
+                  <div class="" style=" width:68%;">
+                    <div class="alert alert-warning" role="alert" style="line-height: 1;">
+                        <label for="our-rut" class="bold">{{__('Please upload the updated RUT of')}}</label>
+                        <span>
+                            <a style="color:#797777;" href="http://www.dian.gov.co" target="_blank">dian.gov.co</a>
+                        </span>
+                      </div>
                   </div>
                   <div class="login-title">
                     <h3 class="black">{{__('Register')}}</h3>
