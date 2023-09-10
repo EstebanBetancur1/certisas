@@ -247,7 +247,7 @@ Mis Certificados
                                     data-bs-placement="top" title="Crear Ticket">
                                     <i class="icon-alert" aria-hidden="true"></i>
                                 </a> -->
-                                <button type="button" data-buttonmodal="ticket-certify" data-bs-toggle="tooltip"
+                                <button type="button" data-buttonmodal="ticket-certify{{$item->agent_nit}}{{ $item->id }}" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Crear Ticket" class=" modal-btn">
                                     <i class="icon-alert" aria-hidden="true"></i>
                                 </button>
@@ -255,6 +255,43 @@ Mis Certificados
                             </div>
                         </td>
                     </tr>
+                    <div class="cs-modal-container" data-modal="ticket-certify{{$item->agent_nit}}{{ $item->id }}">
+                        <div class="modal-shade"></div>
+                        <div class="cs-modal sm-modal">
+                            <div class="cs-modal-content">
+                                <div class="modal_header">
+                                  <h4 class="m-title">Crear ticket</h4>
+                                  <button class="close-modal"><i class="icon-close"></i></button>
+                                </div>
+                                <p>Ticket para: {{$item->agent_name}}, {{$item->agent_nit}}</p>
+                                <form method="post" enctype="multipart/form-data" action="{{ route("backoffice.tickets.sendtikect") }}" 
+                                >
+                                    @csrf
+                                  <div class="cs-field field">
+                                      <label for="">Asunto</label>
+                                      <input type="text" placeholder="Motivo del ticket" name="subject">
+                                  </div>
+                
+                                  <div class="cs-field field">
+                                        <label for="our-rut" class="bold">Archivos de evidencia</label>
+                                        <input type="file">
+                                  </div>
+                
+                                  <div class="cs-field field">
+                                      <label for="">Mensaje</label>
+                                      <textarea name="message" id=""  rows="3" placeholder="Deja un mensaje"></textarea>
+                                  </div>
+                                  <input type="hidden" name="receiver_id" value="{{$item->agent_nit}}">
+                                    <input type="hidden" name="user_id" value="{{$item->user_id}}">
+                                    <input type="hidden" name="emission_id" value="{{$item->id}}">
+                                  <button class="cs-btn btn-blue ml-auto ">Enviar ticket</button>
+                                </form>
+                
+                            </div>
+                        </div>
+                </div>
+
+
                     @endforeach
                     @else
                     <tr>
@@ -410,41 +447,6 @@ Mis Certificados
     </div> -->
 </div>
 
-<div class="cs-modal-container" data-modal="ticket-certify">
-        <div class="modal-shade"></div>
-        <div class="cs-modal sm-modal">
-            <div class="cs-modal-content">
-                <div class="modal_header">
-                  <h4 class="m-title">Crear ticket</h4>
-                  <button class="close-modal"><i class="icon-close"></i></button>
-                </div>
-                <p>Ticket para: AMERICAS STYRENICS DE COLOMBIA LTDA, 900199343</p>
-                <form action="">
-                  <div class="cs-field field">
-                      <label for="">Asunto</label>
-                      <input type="text" placeholder="Motivo del ticket">
-                  </div>
 
-                  <div class="cs-field field">
-                        <label for="our-rut" class="bold">Archivos de evidencia</label>
-                        <div class="upload">
-                            <input name="rut" id="ticket-evidence" type="file" class="upload" required accept="application/pdf, .doc,.docx,application/msword">
-                            <label for="ticket-evidence">Cargar archivo</label>
-                        </div>
-                    </div>
-
-                  <div class="cs-field field">
-                      <label for="">Mensaje</label>
-                      <textarea name="" id=""  rows="3" placeholder="Deja un mensaje"></textarea>
-                  </div>
-
-
-
-                  <button class="cs-btn btn-blue ml-auto ">Enviar ticket</button>
-                </form>
-
-            </div>
-        </div>
-    </div>
 
 @endsection

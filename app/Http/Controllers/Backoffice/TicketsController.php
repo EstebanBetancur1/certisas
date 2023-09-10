@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Backoffice;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
@@ -39,8 +40,7 @@ class TicketsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function emission($id)
-    {
+    public function emission($id){
         $repository = Repository("Emission");
         $ticketRepository = Repository("Ticket");
         $messageRepository = Repository("Message");
@@ -57,9 +57,9 @@ class TicketsController extends Controller
             $messages = $messageRepository->orderBy("id", "asc")->findwhere(["ticket_id" => $ticket->id]);
         }
 
-        return view('backoffice.tickets.emission', compact("emission", "ticket", "messages", "isNew"));
+        return view('backoffice.tickets.emission', compact("emission", "ticket", "messages"));
     }
-
+   
     public function store($id){
 
         $post = request()->all();
@@ -79,7 +79,7 @@ class TicketsController extends Controller
             'transmitter_id'    => session("companyID"),
             'emission_id'       => $emission->id,
             'receiver_id'       => $company->id,
-            'status'            => 1                    ,
+            'status'            => 1      ,
         ]);
 
         if($ticket){
@@ -244,4 +244,37 @@ class TicketsController extends Controller
             unlink($pathAbsolute.'/'.$image);
         }
     }
+
+    public function sendtikect(Request $request){
+
+
+        $post = $request->all();
+
+        $id = 1;
+    
+       $tick = DB::table('tickets')->insert([
+            'subject' => $post['subject'],
+            'message' => $post['message'],
+            'user_id' => $post['user_id'],
+            'transmitter_id' => session("companyID"),
+            'emission_id' => $post['emission_id'],
+            'receiver_id' => $post['receiver_id'],
+            'status' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        if($tick){
+            return back()->with("alert_success", "El ticket se ha enviado con &eacute;xito");
+        }
+
+        return back()->with("alert_error", "Ocurrio un error por favor, intente mas tarde");
+
+
+
+    }
+
+
+
+
 }

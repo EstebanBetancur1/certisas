@@ -35,7 +35,7 @@
                             <tr>
                                 <td>{!! $ticket->subject !!}</td>
                                 <td>{!! $ticket->message !!}</td>
-                                <td>{!! $ticket->companyReceiver->name !!}</td>
+                                <td>{!! $ticket->companyTransmitter->name !!}</td>
                                 <td class="text-center">{{ datetimeFormat($ticket->created_at, 'Y-m-d') }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('backoffice.tickets.emission', ['id' => $ticket->emission_id]) }}" class="btn btn-sm btn-secondary">

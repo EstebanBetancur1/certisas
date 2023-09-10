@@ -185,7 +185,6 @@
                                     </span>
                                 @else
                                     <span class="text-info" role="alert">
-                                        <strong>Si la empresa es nueva debe cargar el RUT (pdf).</strong>
                                     </span>
                                 @endif
                                 </div>
@@ -201,7 +200,6 @@
                                     </span>
                                 @else
                                     <span class="text-info" role="alert">
-                                        <strong>Si la empresa ya existe solo debe ingresar el NIT.</strong>
                                     </span>
                                 @endif
                                 </div>

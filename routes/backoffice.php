@@ -20,6 +20,7 @@ Route::post('/company/update/{id}/rut', 'CompanyController@updateRut')->name('co
 Route::post('/request/access', 'RequestController@access')->name('request.access');
 
 Route::resource('templates', 'TemplatesController')->parameters(['templates' => 'id']);
+
 Route::get('/templates/{id}/status/{status}', 'TemplatesController@status')->name('templates.status');
 Route::get('/templates/export/excel', 'TemplatesController@export')->name('templates.export');
 
@@ -43,10 +44,25 @@ Route::get('/emissions/send/{id}', 'EmissionsController@sendAlert')->name('emiss
 Route::get('/declarations', 'DeclarationsController@index')->name('declarations.index');
 Route::post('/declarations/store', 'DeclarationsController@store')->name('declarations.store');
 
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/tickets/my', 'TicketsController@my')->name('tickets.my');
+Route::post('/tickets/sendtikect', 'TicketsController@sendtikect')->name('tickets.sendtikect');
+
 Route::get('/tickets/emission/{id}', 'TicketsController@emission')->name('tickets.emission');
+
+
 Route::post('/tickets/store/{id}', 'TicketsController@store')->name('tickets.emission.store');
 Route::post('/tickets/store/{id}/reply', 'TicketsController@replyStore')->name('tickets.reply.store');
-Route::get('/tickets/my', 'TicketsController@my')->name('tickets.my');
 Route::get('/tickets/company', 'TicketsController@company')->name('tickets.company');
 Route::get('/tickets/download/{id}', 'TicketsController@downloadFile')->name('tickets.download.file');
 Route::get('/tickets/download/message/{id}', 'TicketsController@downloadFileMessage')->name('tickets.message.download.file');
