@@ -60,9 +60,9 @@ Route::post('/tickets/sendtikect', 'TicketsController@sendtikect')->name('ticket
 
 Route::get('/tickets/emission/{id}', 'TicketsController@emission')->name('tickets.emission');
 
-
 Route::post('/tickets/store/{id}', 'TicketsController@store')->name('tickets.emission.store');
 Route::post('/tickets/store/{id}/reply', 'TicketsController@replyStore')->name('tickets.reply.store');
+
 Route::get('/tickets/company', 'TicketsController@company')->name('tickets.company');
 Route::get('/tickets/download/{id}', 'TicketsController@downloadFile')->name('tickets.download.file');
 Route::get('/tickets/download/message/{id}', 'TicketsController@downloadFileMessage')->name('tickets.message.download.file');

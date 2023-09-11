@@ -21,15 +21,24 @@
         }
 
         .wrapper-chat{
-            margin-top: 20px;
-            margin-bottom: 20px;
             width: 100%;
+            height: 24vh;
+            overflow: scroll;
+            overflow-x: hidden;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            padding: 30px;
+            border: 1px solid;
+            border-radius: 3px;
         }
-
+        #message{
+            height: 50px;
+            resize: none;
+            display:block;
+        }
         .message{
             padding: 5px 10px;
             margin-bottom: 10px;
-
+            
             border-radius: 5px;
             -moz-border-radius: 5px;
             -webkit-border-radius: 5px;
@@ -77,7 +86,7 @@
                     <div style="border-left: 3px solid #cecece; padding-left: 15px; margin-bottom: 20px;">
                         <h5>{!! $ticket->subject !!}</h5>
                         <p>{!! $ticket->message !!}</p>
-
+                    
                         @if($ticket->file)
                             <a href="{{ route('backoffice.tickets.download.file', ['id' => $ticket->id]) }}">Descargar archivo</a>
                         @endif
@@ -89,7 +98,7 @@
                             <div class="row">
                                 <div class="col {{ ((int)$message->user_id === (int)auth()->user()->id)?'my-message':'other-message' }}">
                                     <div class="message">
-                                        <div class="datetime">{{ datetimeFormat($message->created_at, 'Y-m-d') }},
+                                        <div class="datetime">{!! $emission->id !!}, <strong>{{ datetimeFormat($message->created_at, 'Y-m-d') }}</strong>
                                             @if($message->file)
                                                |  <a style="color: #ffffff;" href="{{ route('backoffice.tickets.message.download.file', ['id' => $message->id]) }}">Descargar archivo</a>
                                             @endif
@@ -115,6 +124,7 @@
                                 <div class="form-group">
                                     {!! Form::label('message', 'Mensaje', ['class' => 'control-label']) !!}
                                     {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => '', 'maxlength' => 1000]) !!}
+                    
                                     @if ($errors->has('message'))
                                         <p class="text-danger">{!! $errors->first('message') !!}</p>
                                     @endif
@@ -139,9 +149,7 @@
                     </form>
 
                 @else
-
                     <hr />
-
                     <form class="form-horizontal" action="{{ route('backoffice.tickets.emission.store', [$emission->id]) }}" method="post" enctype="multipart/form-data">
 
                         <div class="row justify-content-md-center">

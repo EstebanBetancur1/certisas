@@ -193,6 +193,7 @@ Mis Certificados
                     <th class="sm-col">Nit</th>
                     <th class="big-col">Emisor</th>
                     <th>Periodo</th>
+                    <th>Fecha emision</th>
                     <th class="sm-col text-center">Opciones</th>
                 </tr>
                 {{-- <tr>
@@ -232,6 +233,8 @@ Mis Certificados
                         <td>{{ $item->agent_nit }}</td>
                         <td>{{ $item->agent_name }}</td>
                         <td>{{ ((int)$item->period_type === 1 || (int)$item->period_type === 2)?getPeriod($item->period_type, $item->period):"Todo el " . $item->year  }}
+                        <td>{{ $item->created_at }}</td>
+
                         </td>
                         <td class="text-center">
                             <div class="table-row-actions">
@@ -263,7 +266,7 @@ Mis Certificados
                                   <h4 class="m-title">Crear ticket</h4>
                                   <button class="close-modal"><i class="icon-close"></i></button>
                                 </div>
-                                <p>Ticket para: {{$item->agent_name}}, {{$item->agent_nit}}</p>
+                                <p>Ticket para: {{$item->agent_name}}</p>
                                 <form method="post" enctype="multipart/form-data" action="{{ route("backoffice.tickets.sendtikect") }}" 
                                 >
                                     @csrf
@@ -281,7 +284,7 @@ Mis Certificados
                                       <label for="">Mensaje</label>
                                       <textarea name="message" id=""  rows="3" placeholder="Deja un mensaje"></textarea>
                                   </div>
-                                  <input type="hidden" name="receiver_id" value="{{$item->agent_nit}}">
+                                  <input type="hidden" name="receiver_id" value="{{$item->company_id}}">
                                     <input type="hidden" name="user_id" value="{{$item->user_id}}">
                                     <input type="hidden" name="emission_id" value="{{$item->id}}">
                                   <button class="cs-btn btn-blue ml-auto ">Enviar ticket</button>

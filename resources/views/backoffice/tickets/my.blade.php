@@ -24,7 +24,8 @@
                     <tr>
                         <th class="align-top">Asunto</th>
                         <th class="align-top">Mensaje</th>
-                        <th class="align-top">Empresa</th>
+                        <th class="align-top">Emisor</th>
+                        <th class="align-top">Receptor</th>
                         <th class="align-top" width="12%">Fecha de emisi&oacute;n</th>
                         <th class="align-top" width="6%">Opciones</th>
                     </tr>
@@ -36,13 +37,13 @@
                                 <td>{!! $ticket->subject !!}</td>
                                 <td>{!! $ticket->message !!}</td>
                                 <td>{!! $ticket->companyTransmitter->name !!}</td>
+                                <td>{!! $ticket->companyReceiver->name !!}</td>
                                 <td class="text-center">{{ datetimeFormat($ticket->created_at, 'Y-m-d') }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('backoffice.tickets.emission', ['id' => $ticket->emission_id]) }}" class="btn btn-sm btn-secondary">
                                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                     </a>
                                 </td>
-
                             </tr>
                         @endforeach
                     @else

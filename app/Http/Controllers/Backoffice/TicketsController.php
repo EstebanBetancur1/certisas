@@ -135,7 +135,6 @@ class TicketsController extends Controller
     public function replyStore($id){
 
         $post = request()->all();
-
         $ticketRepository = Repository("Ticket");
         $messageRepository = Repository("Message");
 
