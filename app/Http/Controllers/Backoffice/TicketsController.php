@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendTicket;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
 
@@ -19,7 +21,10 @@ class TicketsController extends Controller
     function my(){
         $ticketRepository = Repository("Ticket");
 
-        $tickets = $ticketRepository->findWhere(['user_id' => auth()->user()->id, 'status' => 1]);
+        $user_tramiiter = $ticketRepository->findWhere(['transmitter_id' => session("companyID"), 'status' => 1]);
+        $user_receiver = $ticketRepository->findWhere(['receiver_id' => session("companyID"), 'status' => 1]);     
+
+        $tickets = $user_tramiiter->merge($user_receiver);
 
         return view('backoffice.tickets.my', compact("tickets"));
     }
@@ -245,30 +250,70 @@ class TicketsController extends Controller
     }
 
     public function sendtikect(Request $request){
-
-
         $post = $request->all();
 
-        $id = 1;
-    
-       $tick = DB::table('tickets')->insert([
-            'subject' => $post['subject'],
-            'message' => $post['message'],
-            'user_id' => $post['user_id'],
-            'transmitter_id' => session("companyID"),
-            'emission_id' => $post['emission_id'],
-            'receiver_id' => $post['receiver_id'],
-            'status' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
+        $ticketRepository = Repository("Ticket");
 
-        if($tick){
-            return back()->with("alert_success", "El ticket se ha enviado con &eacute;xito");
+        $ticket = $ticketRepository->findWhere([
+            'emission_id' => $post['emission_id']
+        ])->first();
+
+        if($ticket){
+            return back()->with("alert_error", "Ya existe un ticket con el mismo id de emisi&oacute;n");
+        }else{
+            $tick = DB::table('tickets')->insert([
+                'subject' => $post['subject'],
+                'message' => $post['message'],
+                'user_id' => $post['user_id'],
+                'transmitter_id' => session("companyID"),
+                'emission_id' => $post['emission_id'],
+                'receiver_id' => $post['receiver_id'],
+                'status' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+
+            $emissionRepository = Repository("Emission");
+
+            $emission = $emissionRepository->find($post['emission_id']);
+
+            $companyRepository = Repository("Company");
+
+            $company = $companyRepository->findWhere(['nit' => $emission->agent_nit])->first();
+
+
+            $data = [
+                'subject' => $post['subject'],
+                'message' => $post['message'],
+                'user_id' => $post['user_id'],
+                'transmitter_id' => session("companyID"),
+                'emission_id' => $post['emission_id'],
+                'receiver_id' => $post['receiver_id'],
+                'status' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'company' => $company,
+                'emission' => $emission
+            ];
+
+            Mail::to($company->email)->send(new SendTicket($data));
+
+
+
+        
+    
+            if($tick){
+                return back()->with("alert_success", "El ticket se ha enviado con &eacute;xito");
+            }
+    
+            return back()->with("alert_error", "Ocurrio un error por favor, intente mas tarde");
+
         }
 
-        return back()->with("alert_error", "Ocurrio un error por favor, intente mas tarde");
+        
 
+      
 
 
     }

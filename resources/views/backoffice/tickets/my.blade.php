@@ -16,7 +16,9 @@
     <div class="content">
         <div class="block">
             <div class="block-content">
-
+                    {{--show all data session --}}
+                    
+        
                 <h4 class="page-title">Mis Tickets</h4>
 
                 <table id="list-items" class="table table-bordered table-striped">

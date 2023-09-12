@@ -272,9 +272,10 @@ Mis Certificados
                                     @csrf
                                   <div class="cs-field field">
                                       <label for="">Asunto</label>
-                                      <input type="text" placeholder="Motivo del ticket" name="subject">
+                                      <input type="text" placeholder="Motivo del ticket" name="subject" readonly 
+                                    value="@if($item->type === 1)CERTIFICADO DE RETENCI&Oacute;N A T&Iacute;TULO DE VENTAS {{ datetimeFormat($item->created_at, 'Y') }} @if($item->period_type === 1)Mensual {{ $item->period }}@endif @if($item->period_type === 1 || $item->period_type === 2)({{ getPeriod($item->period_type, $item->period) }}) @endif @if($item->period_type === 3)(Anual)@endif @elseif($item->type === 2)CERTIFICADO DE RETENCI&Oacute;N A T&Iacute;TULO DE RENTA @if($item->period_type === 1)Mensual {{ $item->period }} @endif @if($item->period_type === 1 || $item->period_type === 2) ({{ getPeriod($item->period_type, $item->period) }})@endif @if($item->period_type === 3)(Anual) @endif @elseif($item->type === 3)CERTIFICADO DE INDUSTRIA Y COMERCIO @if($item->period_type === 1)Mensual {{ $item->period }} @endif @if($item->period_type === 1 || $item->period_type === 2)({{ getPeriod($item->period_type,$item->period) }})@endif @if($item->period_type === 3)(Anual)
+                                    @endif @endif">
                                   </div>
-                
                                   <div class="cs-field field">
                                         <label for="our-rut" class="bold">Archivos de evidencia</label>
                                         <input type="file">
@@ -293,8 +294,6 @@ Mis Certificados
                             </div>
                         </div>
                 </div>
-
-
                     @endforeach
                     @else
                     <tr>
