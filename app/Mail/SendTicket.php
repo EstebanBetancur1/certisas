@@ -21,8 +21,7 @@ class SendTicket extends Mailable
     $this->request = $request;
 
     if (isset($this->request['emission_id'])) {
-        $emissionId = $this->request['emission_id'];
-        $this->subject = "Haz recibido un ticket identificado con el número $emissionId - " . setting('project', config('app.name', 'Laravel'));
+        $this->subject = "Haz recibido un ticket - " . setting('project', config('app.name', 'Laravel'));
     } else {
         $this->subject = "Haz recibido un ticket - " . setting('project', config('app.name', 'Laravel'));
     }

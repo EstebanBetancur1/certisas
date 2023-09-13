@@ -282,6 +282,12 @@ class TicketsController extends Controller
 
             $company = $companyRepository->findWhere(['nit' => $emission->agent_nit])->first();
 
+            $ticket = $ticketRepository->findWhere([
+                'emission_id' => $post['emission_id']
+            ])->first();
+
+            $ticket = $ticket->id;
+
             $data = [
                 'subject' => $post['subject'],
                 'message' => $post['message'],
@@ -293,6 +299,9 @@ class TicketsController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'provider_name' => $emission->provider_name,
+                'agent_name' => $emission->agent_name,
+                'ticket' => $ticket
+                
             ];
 
             Mail::to($company->email)->send(new SendTicket($data));

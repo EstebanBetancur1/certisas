@@ -123,20 +123,19 @@
 
                                 <div class="form-group">
                                     {!! Form::label('message', 'Mensaje', ['class' => 'control-label']) !!}
-                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => '', 'maxlength' => 1000]) !!}
-                    
+                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => '', 'maxlength' => 1000, 'required' => 'required']) !!}                    
                                     @if ($errors->has('message'))
                                         <p class="text-danger">{!! $errors->first('message') !!}</p>
                                     @endif
                                 </div>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     {!! Form::label('file', 'Archivo', ['class' => 'control-label']) !!}
                                     {!! Form::file('file', null, ['class' => 'form-control', 'placeholder' => '']) !!}
                                     @if ($errors->has('file'))
                                         <p class="text-danger">{!! $errors->first('file') !!}</p>
                                     @endif
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group">
                                     {!! csrf_field() !!}
@@ -166,19 +165,19 @@
 
                                 <div class="form-group">
                                     {!! Form::label('message', 'Mensaje', ['class' => 'control-label']) !!}
-                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => '', 'maxlength' => 1000]) !!}
+                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => '', 'maxlength' => 1000, 'required' => 'required']) !!}
                                     @if ($errors->has('message'))
                                         <p class="text-danger">{!! $errors->first('message') !!}</p>
                                     @endif
                                 </div>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     {!! Form::label('file', 'Archivo', ['class' => 'control-label']) !!}
                                     {!! Form::file('file', null, ['class' => 'form-control', 'placeholder' => '']) !!}
                                     @if ($errors->has('file'))
                                         <p class="text-danger">{!! $errors->first('file') !!}</p>
                                     @endif
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group">
                                     {!! csrf_field() !!}
