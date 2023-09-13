@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
+
 use App\Repositories\SettingRepository;
 use Illuminate\Support\Facades\Cache;
 
@@ -33,8 +34,7 @@ class DeclarationsController extends Controller
     protected $model = "Doc";
     protected $textCreateBtn = "";
 
-    public function index()
-    {
+    public function index(){
         $periods = [];
         $periods_bimestral = [];
         $items = [];
@@ -122,17 +122,18 @@ class DeclarationsController extends Controller
         return view('backoffice.declarations.index', compact("years", "periods", "municipalities", "periods_bimestral", "banks", "items_1", "items_2", "items_3"));
     }
 
+  
+
     public function store(){
         $declarationRepository = Repository("Declaration");
         $post = request()->all();
-
-        $tab = null;
-
         if(request()->input("tab")){
             $tab = request()->input("tab");
         }else{
             return back()->with("alert_error", 'Ocurrio un error, por favor intente nuevamente.');
         }
+
+        
 
         if($tab === "s1"){
             $validator = $this->validatorType_1($post);
@@ -159,7 +160,7 @@ class DeclarationsController extends Controller
                     'bank_id'           => $post["bank_id"],
                     'date_payment'      => $post["date_payment"],
                     'date_emission'     => datetimeFormat(null, 'Y-m-d'),
-                    'company_id'        => session("companyID"),
+                    'company_id'        => session("companyID")
                 ]);
             }else{
                 $declaration = $declarationRepository->create([
@@ -172,7 +173,7 @@ class DeclarationsController extends Controller
                     'bank_id'       => $post["bank_id"],
                     'date_payment'  => $post["date_payment"],
                     'date_emission' => datetimeFormat(null, 'Y-m-d'),
-                    'company_id'    => session("companyID"),
+                    'company_id'    => session("companyID")
                 ]);
             }
         } catch (\Exception $e) {
@@ -186,61 +187,64 @@ class DeclarationsController extends Controller
         return response()->redirectTo(route("backoffice.declarations.index", ["tab" => $tab]))->with("alert_error", "Ocurrio un error, por favor intente nuevamente.");
     }
 
-    protected function validatorType_1($post){
-        $validator = Validator::make($post, [
-            'type'              => 'required|in:1',
-            'year'              => 'required',
-            'period_type'       => 'required|in:1',
-            'period'            => 'required|integer',
-            'form'              => 'required|string',
-            'nro'               => 'required|string',
-            'bank_id'           => 'required|integer',
-            'date_payment'      => 'required|date',
-        ]);
 
-        if ($validator->fails()) {
-            return $validator;
-        }
 
-        return null;
+
+protected function validatorType_1($post){
+    $validator = Validator::make($post, [
+        'type'              => 'required|in:1',
+        'year'              => 'required',
+        'period_type'       => 'required|in:1',
+        'period'            => 'required|integer',
+        'form'              => 'required|string',
+        'nro'               => 'required|string',
+        'bank_id'           => 'required|integer',
+        'date_payment'      => 'required|date',
+    ]);
+
+    if ($validator->fails()) {
+        return $validator;
     }
 
-    protected function validatorType_2($post){
-        $validator = Validator::make($post, [
-            'type'              => 'required|in:2',
-            'year'              => 'required',
-            'period_type'       => 'required|in:1',
-            'period'            => 'required|integer',
-            'form'              => 'required|string',
-            'nro'               => 'required|string',
-            'bank_id'           => 'required|integer',
-            'date_payment'      => 'required|date',
-        ]);
+    return null;
+}
 
-        if ($validator->fails()) {
-            return $validator;
-        }
+protected function validatorType_2($post){
+    $validator = Validator::make($post, [
+        'type'              => 'required|in:2',
+        'year'              => 'required',
+        'period_type'       => 'required|in:1',
+        'period'            => 'required|integer',
+        'form'              => 'required|string',
+        'nro'               => 'required|string',
+        'bank_id'           => 'required|integer',
+        'date_payment'      => 'required|date',
+    ]);
 
-        return null;
+    if ($validator->fails()) {
+        return $validator;
     }
 
-    protected function validatorType_3($post){
+    return null;
+}
 
-        $validator = Validator::make($post, [
-            'type'              => 'required|in:3',
-            'year'              => 'required',
-            'period_type'       => 'required|in:1,2,3',
-            'period'            => 'required|integer',
-            'declaration'       => 'required|string',
-            'municipality_id'   => 'required|integer',
-            'bank_id'           => 'required|integer',
-            'date_payment'      => 'required|date',
-        ]);
+protected function validatorType_3($post){
 
-        if ($validator->fails()) {
-            return $validator;
-        }
+    $validator = Validator::make($post, [
+        'type'              => 'required|in:3',
+        'year'              => 'required',
+        'period_type'       => 'required|in:1,2,3',
+        'period'            => 'required|integer',
+        'declaration'       => 'required|string',
+        'municipality_id'   => 'required|integer',
+        'bank_id'           => 'required|integer',
+        'date_payment'      => 'required|date',
+    ]);
 
-        return null;
+    if ($validator->fails()) {
+        return $validator;
     }
+
+    return null;
+}
 }
