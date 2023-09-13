@@ -16,10 +16,18 @@ class SendTicket extends Mailable
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->subject = "Haz recibido un tikect - " . setting('project', config('app.name', 'Laravel'));
+    public function __construct($request)
+{
+    $this->request = $request;
+
+    if (isset($this->request['emission_id'])) {
+        $emissionId = $this->request['emission_id'];
+        $this->subject = "Haz recibido un ticket identificado con el número $emissionId - " . setting('project', config('app.name', 'Laravel'));
+    } else {
+        $this->subject = "Haz recibido un ticket - " . setting('project', config('app.name', 'Laravel'));
     }
+}
+
 
     /**
      * Build the message.
@@ -28,6 +36,9 @@ class SendTicket extends Mailable
      */
     public function build()
     {
-        return $this->view('email.send_ticket');
+        $request = $this->request;
+        return $this->view('email.send_ticket', compact('request'));
+
+
     }
 }

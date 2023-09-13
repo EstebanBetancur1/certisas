@@ -282,7 +282,6 @@ class TicketsController extends Controller
 
             $company = $companyRepository->findWhere(['nit' => $emission->agent_nit])->first();
 
-
             $data = [
                 'subject' => $post['subject'],
                 'message' => $post['message'],
@@ -293,16 +292,12 @@ class TicketsController extends Controller
                 'status' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'company' => $company,
-                'emission' => $emission
+                'provider_name' => $emission->provider_name,
             ];
 
             Mail::to($company->email)->send(new SendTicket($data));
 
 
-
-        
-    
             if($tick){
                 return back()->with("alert_success", "El ticket se ha enviado con &eacute;xito");
             }
