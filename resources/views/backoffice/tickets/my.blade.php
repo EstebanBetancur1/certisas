@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-
+    <?php $CompanySession = session("companyID"); ?>
     <div class="content">
         <div class="block">
             <div class="block-content">
@@ -35,6 +35,7 @@
                     <tbody>
                     @if($tickets->count())
                         @foreach($tickets as $ticket)
+                
                             <tr>
                                 <td>{!! $ticket->subject !!}</td>
                                 <td>{!! $ticket->message !!}</td>
@@ -42,10 +43,18 @@
                                 <td>{!! $ticket->companyReceiver->name !!}</td>
                                 <td class="text-center">{{ datetimeFormat($ticket->created_at, 'Y-m-d') }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('backoffice.tickets.emission', ['id' => $ticket->emission_id]) }}" class="btn btn-sm btn-secondary">
+                                    <a href="{{ route('backoffice.tickets.emission', ['id' => $ticket->emission_id]) }}" class="btn btn-sm btn-success">
                                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                     </a>
+                
+                                    @if($CompanySession == $ticket->transmitter_id)
+                                    <a href="{{ route('backoffice.tickets.close', ['id' => $ticket->id]) }}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-ban" aria-hidden="true"></i>
+                                    </a>
+                                    @endif
+                                    
                                 </td>
+                                
                             </tr>
                         @endforeach
                     @else

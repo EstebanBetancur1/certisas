@@ -25,7 +25,7 @@ class TicketsController extends Controller
         $user_receiver = $ticketRepository->findWhere(['receiver_id' => session("companyID"), 'status' => 1]);     
 
         $tickets = $user_tramiiter->merge($user_receiver);
-
+        
         return view('backoffice.tickets.my', compact("tickets"));
     }
 
@@ -84,7 +84,7 @@ class TicketsController extends Controller
             'transmitter_id'    => session("companyID"),
             'emission_id'       => $emission->id,
             'receiver_id'       => $company->id,
-            'status'            => 1      ,
+            'status'            => 1    ,
         ]);
 
         if($ticket){
@@ -322,7 +322,17 @@ class TicketsController extends Controller
 
     }
 
+    public function close($id){
+      $ticketRepository = Repository("Ticket");
 
+        $ticket = $ticketRepository->find($id);
+
+        $ticket->status = 0;
+
+        $ticket->save();
+
+        return back()->with("alert_success", "El ticket se ha cerrado con &eacute;xito");
+    }
 
 
 }

@@ -45,20 +45,11 @@ Route::get('/declarations', 'DeclarationsController@index')->name('declarations.
 Route::post('/declarations/store', 'DeclarationsController@store')->name('declarations.store');
 
 
-
-
-
-
-
-
-
-
-
-
 Route::get('/tickets/my', 'TicketsController@my')->name('tickets.my');
 Route::post('/tickets/sendtikect', 'TicketsController@sendtikect')->name('tickets.sendtikect');
 
 Route::get('/tickets/emission/{id}', 'TicketsController@emission')->name('tickets.emission');
+Route::get('/tickets/emission/close/{id}', 'TicketsController@close')->name('tickets.close');
 
 Route::post('/tickets/store/{id}', 'TicketsController@store')->name('tickets.emission.store');
 Route::post('/tickets/store/{id}/reply', 'TicketsController@replyStore')->name('tickets.reply.store');
