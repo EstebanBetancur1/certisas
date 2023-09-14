@@ -35,6 +35,7 @@ $('#registrarme').on("click", function(){
   $('#all-rows input').on('click', function(){
     if($(this).prop("checked") == true){
       $('table input[type="checkbox"]').prop("checked", true);
+      console.log('checked')
       $('.table-action').removeClass('d-none')
     }
     else if($(this).prop("checked") == false){
@@ -42,6 +43,19 @@ $('#registrarme').on("click", function(){
       $('.table-action').addClass('d-none')
     }
   })
+
+  $('.check_rows_cs_fileds').on('click', function(){
+    if($(this).prop("checked") == true){
+      var selectedItems = [];
+      $('.table-action').removeClass('d-none').each(function(){
+        selectedItems.push($(this).val());
+      });
+      console.log(selectedItems);
+    }
+    else if($(this).prop("checked") == false){
+      $('.table-action').addClass('d-none')
+    }
+  });
   
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()

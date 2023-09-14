@@ -232,7 +232,7 @@ Declaraciones
                             </div>
                         </div>
                     </div>
-                        <button class="btn-icon table-action modal-btn" data-buttonmodal="declaracion-tab-1" type="button"
+                        <button style="margin-left: auto; margin-right: 15px;" class="btn-icon modal-btn" data-buttonmodal="declaracion-tab-1" type="button"
                             rel="tooltip" data-placement="top" title="Agregar declaración"
                             ><i class="icon-statement"></i></button>
                         <div class="table-search">
@@ -367,8 +367,11 @@ Declaraciones
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="cs-field"><input type="checkbox"></div>
+                                    <div class="cs-field" id="all-rows">
+                                        <input type="checkbox">
+                                    </div>
                                 </th>
+                                <th class="sm-col">id</th>
                                 <th class="sm-col">Año</th>
                                 <th class="sm-col">Per&iacute;odo</th>
                                 <th class="align-top" width="25%">350 - Declaración de Rete Fuente</th>
@@ -384,8 +387,11 @@ Declaraciones
                             @foreach($items_1 as $item)
                             <tr>
                                 <td>
-                                    <div class="cs-field" id="all-rows"><input type="checkbox"></div>
+                                    <div class="cs-field">
+                                        <input type="checkbox" class="check_rows_cs_fileds">
+                                    </div>
                                 </td>
+                                <td>{{ $item->id }}</td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ getPeriod(1, $item->period) }}</td>
                                 <td>{{ $item->form }}</td>
@@ -466,7 +472,8 @@ Declaraciones
                         </div>
                     </div>
                     
-                    <button class="btn-icon table-action modal-btn" data-buttonmodal="declaracion-tab-2" type="button"
+                    <button style="    margin-left: auto;
+                    margin-right: 15px;" class="btn-icon modal-btn" data-buttonmodal="declaracion-tab-2" type="button"
                             rel="tooltip" data-placement="top" title="Agregar declaración"
                             ><i class="icon-statement"></i></button>
                         <div class="table-search">
@@ -597,7 +604,9 @@ Declaraciones
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="cs-field"><input type="checkbox"></div>
+                                    <div class="cs-field" id="all-rows">
+                                        <input type="checkbox">
+                                    </div>
                                 </th>
                                 <th class="sm-col">Año</th>
                                 <th class="sm-col">Per&iacute;odo</th>
@@ -614,7 +623,9 @@ Declaraciones
                             @foreach($items_2 as $item)
                             <tr>
                                 <td>
-                                    <div class="cs-field"><input type="checkbox"></div>
+                                    <div class="cs-field">
+                                        <input type="checkbox" class="check_rows_cs_fileds">
+                                    </div>
                                 </td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ getPeriod(1, $item->period) }}</td>
@@ -699,7 +710,8 @@ Declaraciones
                             </div>
                         </div>
                     </div>
-                        <button class="btn-icon table-action modal-btn" data-buttonmodal="declaracion-tab-3" type="button"
+                        <button style="margin-left: auto; margin-right: 15px;"
+                         class="btn-icon modal-btn" data-buttonmodal="declaracion-tab-3" type="button"
                             rel="tooltip" data-placement="top" title="Agregar declaración"
                             ><i class="icon-statement"></i></button>
                         <div class="table-search">
@@ -834,7 +846,9 @@ Declaraciones
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="cs-field"><input type="checkbox"></div>
+                                    <div class="cs-field" id="all-rows">
+                                        <input type="checkbox">
+                                    </div>
                                 </th>
                                 <th class="sm-col">Año</th>
                                 <th class="sm-col">Per&iacute;odo</th>
@@ -850,7 +864,9 @@ Declaraciones
                             @foreach($items_3 as $item)
                             <tr>
                                 <td>
-                                    <div class="cs-field"><input type="checkbox"></div>
+                                    <div class="cs-field">
+                                        <input type="checkbox" class="check_rows_cs_fileds">
+                                    </div>
                                 </td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ getPeriod(2, $item->period) }}</td>
