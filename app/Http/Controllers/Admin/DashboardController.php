@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Auth;
 
@@ -34,10 +35,14 @@ class DashboardController extends Controller
             ['is_admin', '<>', 1],
             ['type', '=', 2],
         ]);
+        
+        $reuest = DB::table('requests')->where('status', '=', 0);
 
+    
         $customersCount = $customers->count();
         $assistantsCount = $assistants->count();
+        $reuestCount = $reuest->count();
 
-        return view('admin.dashboard.index', compact('customersCount', 'assistantsCount'));
+        return view('admin.dashboard.index', compact('customersCount', 'assistantsCount', 'reuestCount'));
     }
 }

@@ -259,7 +259,7 @@ class TicketsController extends Controller
         ])->first();
 
         if($ticket){
-            return back()->with("alert_error", "Ya existe un ticket con el mismo id de emisi&oacute;n");
+            return back()->with("alert_error", "Ya existe un ticket para esta emisi&oacute;n");
         }else{
             $tick = DB::table('tickets')->insert([
                 'subject' => $post['subject'],
