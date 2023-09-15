@@ -279,7 +279,7 @@
             <footer id="page-footer" class="opacity-0">
                 <div class="content py-20 font-size-xs clearfix">
                     <div class="float-right">
-                        <b>Version</b> 1.0.0
+                        <b>Version</b> 1.0.1
                     </div>
                     <div class="float-left">
                        <strong>Copyright &copy; <?php echo date('Y')?>. </strong> Todos los derechos reservados

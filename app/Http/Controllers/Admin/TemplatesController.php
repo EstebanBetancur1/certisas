@@ -11,7 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
 use App\Repositories\SettingRepository;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\CrudTrait;
 
@@ -76,17 +76,17 @@ class TemplatesController extends Controller
         }
 
         if(array_key_exists("action", $post) && $post["action"] === "delete"){
+            
+            $update_template_items = DB::table('template_items')->where('template_id', '=', $post["template"])->delete();
+            
+            $templates = DB::table('templates')->where('id', '=', $post["template"])->delete();
 
-            $items = $repository->deleteWhere($conditions);
 
-            $where = array_filter($post, function($a){
-                 return ($a);
-            });
-
-            if(count($where) === 2 && array_key_exists("template", $post) && array_key_exists("action", $post)){
-                $templateRepository->delete($post["template"]);
+            if(! $templates){
+                return back()->with("alert_error", "Registro no encontrado.");
             }
-
+            
+            
             return redirect(route("admin.templates.index"))->with("alert_success", "Los registros ha sido eliminados con &eacute;xito");
         }
 

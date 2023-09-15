@@ -12,6 +12,11 @@
         <th class="text-center" width="15%">Opciones</th>
     </tr>
     </thead>
+    <style>
+        #main-container > div > div:nth-child(2) > div > div > div > nav > div.hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:nth-child(2){
+            display: none !important;
+        }
+    </style>
     <tbody>
         @if($items->count())
             @foreach($items as $item)
