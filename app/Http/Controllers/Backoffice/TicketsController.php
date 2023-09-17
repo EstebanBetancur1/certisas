@@ -303,8 +303,19 @@ class TicketsController extends Controller
                 'ticket' => $ticket
                 
             ];
+            
+            $quienrecibeTicket = $company->id;
 
-            Mail::to($company->email)->send(new SendTicket($data));
+            $resultado = DB::table('company_users')
+            ->join('users', 'company_users.user_id', '=', 'users.id')
+            ->where('company_users.company_id', '=', $quienrecibeTicket)
+            ->select('users.email')
+            ->get();
+            $email = $resultado->pluck('email')->first();
+
+
+
+            Mail::to($email)->send(new SendTicket($data));
 
 
             if($tick){

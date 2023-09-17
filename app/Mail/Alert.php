@@ -22,6 +22,7 @@ class Alert extends Mailable
     {
         $this->provider = $provider;
 
+
         $this->subject = "Certificado Virtual expedido por {$provider["agent_nit"]} - {$provider["agent_name"]}";
     }
 

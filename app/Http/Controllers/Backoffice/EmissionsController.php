@@ -546,11 +546,22 @@ class EmissionsController extends Controller
 
         $emission = $emissionRepository->find($id);
 
-        if($emission){
+        $quienrecibe = $emission->provider->id;
 
-            if($emission->provider && $emission->provider->email){
+        $resultado = DB::table('company_users')
+            ->join('users', 'company_users.user_id', '=', 'users.id')
+            ->where('company_users.company_id', $quienrecibe)
+            ->select('users.email')
+            ->get();
+
+        $email = $resultado->pluck('email')->first();
+
+
+        if($emission){
+        
+            if($emission->provider && $email){
                 try {
-                    Mail::to($emission->provider->email)->send(new Alert([
+                    Mail::to($email)->send(new Alert([
                         'name'          => $emission->provider->name,
                         'nit'           => $emission->provider->nit,
                         'email'         => $emission->provider->email,
