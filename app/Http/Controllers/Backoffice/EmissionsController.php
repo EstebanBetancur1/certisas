@@ -298,7 +298,8 @@ class EmissionsController extends Controller
                         $totalAmountWithheld    += $amountWithheld;
                     }
                 }
-                        
+                $numeroFormateado = (int)preg_replace('/[^0-9]/', '', $itemsExcel[0]);
+
                 $emissions[] = [
                     'agent_name'                => $agent->name,
                     'agent_nit'                 => $agent->nit,
@@ -319,7 +320,8 @@ class EmissionsController extends Controller
                     'date_emission'             => $de,
 
                     'concepts'                  => json_encode($conceptsJson),
-                    'docs'                      => json_encode($itemsExcel),
+                  
+                    'docs'                      => json_encode($numeroFormateado),
 
                     'months'                    => implode(",", $months),
                     'year'                      => request()->input("year"),

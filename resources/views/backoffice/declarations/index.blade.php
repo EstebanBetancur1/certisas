@@ -349,6 +349,7 @@ Declaraciones
                                 </div>
 
                                 <div class="col-lg-12 mt-3">
+                                    <input type="hidden" name="type" value="1" />
                                     <input type="hidden" name="period_type" value="1" />
                                     <input type="hidden" name="tab" value="s1"/>
                                     <button type="submit" class="cs-btn btn-blue ml-auto">Guardar</button>

@@ -77,8 +77,18 @@ class TemplatesController extends Controller
 
         if(array_key_exists("action", $post) && $post["action"] === "delete"){
             
-            $update_template_items = DB::table('template_items')->where('template_id', '=', $post["template"])->delete();
+
+            $templateIconID = DB::table('template_items')
+            ->where('template_id', $post["template"])
+            ->select('template_items.id')
+            ->get('*')
+            ->pluck('id')->all();
+
+            $delete_emisiones = DB::table('emissions')
+            ->whereIn('docs', $templateIconID)
+            ->delete();
             
+            $update_template_items = DB::table('template_items')->where('template_id', '=', $post["template"])->delete();
             $templates = DB::table('templates')->where('id', '=', $post["template"])->delete();
 
 
