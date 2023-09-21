@@ -42,7 +42,7 @@
 
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    {!! Form::label('nit', 'Nit', ['class' => 'control-label']) !!}
+                                    {!! Form::label('type', 'Tipo de impuesto', ['class' => 'control-label']) !!}
                                     {!! Form::text('nit', (request()->has("nit"))?request()->input("nit"):null, ['class' => 'form-control', 'placeholder' => '']) !!}
                                 </div>
                             </div>
@@ -56,8 +56,11 @@
 
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    {!! Form::label('doc', 'Documento', ['class' => 'control-label']) !!}
-                                    {!! Form::text('doc', (request()->has("doc"))?request()->input("doc"):null, ['class' => 'form-control', 'placeholder' => '']) !!}
+                                    {!! Form::label('year', 'A&ntilde;o', ['class' => 'control-label']) !!}
+                                    {!! Form::select('year', $years, request()->input("year"), ['class' => 'form-control', 'placeholder' => '- Seleccione']) !!}
+                                    @if ($errors->has('year'))
+                                        <p class="text-danger">{!! $errors->first('year') !!}</p>
+                                    @endif
                                 </div>
                             </div>
 

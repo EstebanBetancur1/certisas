@@ -87,6 +87,7 @@ class TemplatesController extends Controller
             $delete_emisiones = DB::table('emissions')
             ->whereIn('docs', $templateIconID)
             ->delete();
+
             
             $update_template_items = DB::table('template_items')->where('template_id', '=', $post["template"])->delete();
             $templates = DB::table('templates')->where('id', '=', $post["template"])->delete();
@@ -116,7 +117,18 @@ class TemplatesController extends Controller
         $companies = $companyRepository->findWhere(["status" => 1]);
         $companies = convertToArray($companies, "id", "name");
 
-        return $this->view("index", compact('items', 'templates', 'companies'));
+        
+        $years = [];
+        $now = Carbon::now(config('app.timezone'));
+        $yearStart = $now->year;
+        $y = 0;
+
+        for($i = 6; $i > 0; $i--){
+            $years[$yearStart - $y] = $yearStart - $y;
+            $y++;
+        }
+
+        return $this->view("index", compact('items', 'templates', 'companies', 'years'));
     }
 
     public function import()
