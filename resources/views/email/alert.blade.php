@@ -12,7 +12,7 @@
         	</p>
 
         	<p>
-        		<a href="http://v4.certisaas.com/">www.v4.certisaas.com</a>
+        		<a href="https://v4.certisaas.com/">www.v4.certisaas.com</a>
         	</p>
 
         	<p>
@@ -23,7 +23,7 @@
             	En caso que usted no sea la persona indicada para recibir esta información, le solicitamos reenviarla a la persona en su organización encargada de contabilidad ó impuestos. 
             </p>
 
-            <p><a href="{{ route("auth.user.login.show") }}">Iniciar sesion</a>.</p>
+            <p><a href="https://v4.certisaas.com/">Iniciar sesion</a>.</p>
         </div>
     </section>
 @endsection

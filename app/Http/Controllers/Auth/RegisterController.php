@@ -69,33 +69,30 @@ class RegisterController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function register(RegisterRequest $request){
+    public function register(RegisterRequest $request) {
         $file = $request->rut;
         $upload = $this->uploadFile($file);
-
+    
         if (is_array($upload)) {
             $parser = new Parser();
             $data = parsePdf($parser->parseFile($upload['preview'])->getText());
-
-            if(array_key_exists("nit", $data) && $data["nit"]) {
-
+    
+            if (array_key_exists("nit", $data) && $data["nit"]) {
                 $requestRepository = repository("Request");
                 $companyRepository = Repository("Company");
-
+    
                 $company = $companyRepository->findWhere(["nit" => $data["nit"]])->first();
                 $requestCompany = $requestRepository->findWhere(["nit" => $data["nit"]])->first();
-
-                if($company){
-                    //session()->put("ID", $company->id);
+    
+                if ($company) {
                     unlink($upload['preview']);
                     throw ValidationException::withMessages(['rut' => __('We already have a registered company/user with uploaded document data.')]);
                 } else if ($requestCompany) {
                     unlink($upload['preview']);
                     throw ValidationException::withMessages(['rut' => __('We already have a registration request with this document data.')]);
                 }
-
+    
                 try {
-
                     $instance = $requestRepository->create([
                         'nit'               => $data["nit"],
                         'dv'                => $data["dv"],
@@ -115,32 +112,37 @@ class RegisterController extends Controller
                         'email_status'      => 0,
                         'token'             => sha1(datetimeToken())
                     ]);
-
-                    if($instance){
-                        try{
+    
+                    if ($instance) {
+                        try {
                             Mail::to(setting('email_notification'))->send(new NewCompany($instance));
                             Mail::to($request->email)->send(new Welcome($request->all(), $instance));
                             return new JsonResponse(['success' => __('You have successfully registered.')]);
                         } catch (\Exception $e) {
-                            return new JsonResponse(['error' => __('An error has occurred, please try again.')]);
+                            $instance->delete();
+                            unlink($upload['preview']);
+                            return new JsonResponse(['error' => __('An error has occurred while sending emails.')]);
                         }
                     } else {
                         unlink($upload['preview']);
-                        return new JsonResponse(['error' => __('An error has occurred, please try again.')]);
+                        // Manejar error al crear la instancia en la base de datos
+                        return new JsonResponse(['error' => __('An error has occurred while creating the record.')]);
                     }
-
-
                 } catch (\Exception $e) {
                     unlink($upload['preview']);
-                    return new JsonResponse(['error' => __('An error has occurred, please try again.')]);
+                    // Manejar error en la creación de la instancia en la base de datos
+                    return new JsonResponse(['error' => __('An error has occurred while creating the record.')]);
                 }
             } else {
                 unlink($upload['preview']);
                 return new JsonResponse(['error' => __('Invalid document, please upload the correct file.')]);
             }
-
-        } else return new JsonResponse(['rut' => __('validation.uploaded'),['attribute' => 'rut']]);
+        } else {
+            // Manejar error en la carga del archivo
+            return new JsonResponse(['rut' => __('validation.uploaded'), ['attribute' => 'rut']]);
+        }
     }
+    
 
     public function registerRequest(){
 
