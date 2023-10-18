@@ -176,7 +176,7 @@
                                     <label for="signup-rut">Cargar RUT</label>
                                     {{-- <input type="file" class="form-control" id="signup-rut" name="rut"> --}}
                                     <div class="upload">
-                                        <input name="rut" id="signup-rut" type="file" class="upload" required accept="application/pdf, .doc,.docx,application/msword">
+                                        <input name="rut" id="signup-rut" type="file" class="upload" accept="application/pdf, .doc,.docx,application/msword">
                                         <label for="signup-rut">Cargar archivo</label>
                                     </div>
                                     @if ($errors->has('rut'))

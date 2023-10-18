@@ -28,6 +28,27 @@ function convertAmountToText($amount){
     return AmountsWithLetters::convertirNumeroEnLetras($amount, 0);
 }
 
+function removeAccents($cadena){
+    $replacements = array(
+      'á' => 'a',
+      'é' => 'e',
+      'í' => 'i',
+      'ó' => 'o',
+      'ú' => 'u',
+      'ñ' => 'n',
+      'Á' => 'A',
+      'É' => 'E',
+      'Í' => 'I',
+      'Ó' => 'O',
+      'Ú' => 'U',
+      'Ñ' => 'N',
+    );
+  
+    $cadena = strtr($cadena, $replacements);
+  
+    return $cadena;
+   }
+
 function getAgent(){
     $repository = repository("Company");
     return $repository->findWhere(["id" => session("companyID")])->first();
@@ -219,18 +240,19 @@ function getDv($lines){
 function getSectional($lines){
     $line = $lines["2"];
 
-    preg_match_all('/([0-9\s]+)$/', $line, $matches, PREG_PATTERN_ORDER);
+    // Se modifica la regex para detectar tildes y "ñ"
+    preg_match_all('/([a-zA-Z\s\x80-\xFF]+)/', $line, $matches, PREG_PATTERN_ORDER);
 
-    if(is_array($matches) && count($matches)){
-       $line = trim(preg_replace('/\s+/', '', $matches[0][0]));
-    }
-
-    if(strlen($line) === 1){
-        $line = "0{$line}";
+    if(is_array($matches) && count($matches[0])){
+       $line = implode(" ", $matches[0]);
+       $line = trim($line);
+       $line = removeAccents($line);
     }
 
     return $line;
 }
+
+
 
 function getRutType($lines){
     $line = $lines["3"];
@@ -371,13 +393,15 @@ function getActivities($lines){
             }
 
             if(count($activities)){
-                return implode($activities);
+                // Modify this line to join with quotes and comma
+                return '' . implode(', ', $activities) . '';
             }
         }
     }
 
     return null;
 }
+
 
 function getResponsibilities($lines, $type)
 {

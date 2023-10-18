@@ -93,7 +93,7 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
                         </tr>
                         <tr>
                             <th>Direcci&oacute;n seccional</th>
-                            <td>{{ $item->sectional }} - {!! ($sectional)?$sectional->title:$item->sectional !!}</td>
+                            <td>{!! ($sectional)?$sectional->title:$item->sectional !!}</td>
                         </tr>
                         <tr>
                             <th>Tipo</th>

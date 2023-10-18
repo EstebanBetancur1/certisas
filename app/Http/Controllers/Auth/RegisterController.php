@@ -121,7 +121,7 @@ class RegisterController extends Controller
                         } catch (\Exception $e) {
                             $instance->delete();
                             unlink($upload['preview']);
-                            return new JsonResponse(['error' => __('An error has occurred while sending emails.')]);
+                            return new JsonResponse(['error' => __('Tu correo no existe o esta mal escrito, porfavor verifica.')]);
                         }
                     } else {
                         unlink($upload['preview']);
