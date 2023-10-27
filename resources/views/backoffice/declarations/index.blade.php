@@ -8,11 +8,12 @@
     href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.css" />
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-{{-- <style>
-        .select2.select2-container{
-            width: 100%!important;
+<style>
+       .highlighted {
+        background-color: #0275d8 !important; 
+        color: white;                
         }
-    </style> --}}
+    </style>
 
 @endsection
 
@@ -144,6 +145,103 @@
     }
 
 </script>
+
+<script>
+    $(document).ready(function() {
+     var dataArray = []; // Hacer dataArray accesible globalmente dentro de este script
+ 
+     // Cambiar el estado de selección de todas las filas
+     $(document).on('click', '#all-rowsd', function() {
+         var checked = $(this).find('input').prop('checked');
+         dataArray = []; // Restablecer dataArray
+ 
+         $(this).closest('table').find('tbody tr').each(function() {
+             var checkbox = $(this).find('td:first-child input');
+             checkbox.prop('checked', checked);
+             $(this).toggleClass('highlighted', checked);
+ 
+             if (checked) {
+                 $('.btn-icon.table-action').removeClass('d-none');
+                 dataArray.push({ id: $(this).find('td:nth-child(2)').text() });
+             } else {
+                 $('.btn-icon.table-action').addClass('d-none');
+             }
+         });
+     });
+ 
+     // Cambiar el estado de selección de una fila individual
+     $(document).on('click', '.check_rows_cs_filedsd', function() {
+         var checkbox = $(this);
+         var row = checkbox.closest('tr');
+         var id = row.find('td:nth-child(2)').text();
+         var isChecked = checkbox.is(':checked');
+ 
+         row.toggleClass('highlighted', isChecked);
+         
+         if (isChecked) {
+             dataArray.push({ id: id });
+         } else {
+             dataArray = dataArray.filter(item => item.id !== id);
+         }
+ 
+         // Mostrar u ocultar el botón de acción
+         var isAnyChecked = $('.check_rows_cs_filedsd').is(':checked');
+         isAnyChecked ? $('.btn-icon.table-action').removeClass('d-none') : $('.btn-icon.table-action').addClass('d-none');
+     });
+ 
+     // Función para enviar datos para eliminar
+     function sendDataToEliminate() {
+         $('.deleteRows').on('click', function(e) {
+             e.preventDefault();
+ 
+             if (dataArray.length === 0) {
+                 new Notyf().error('No has seleccionado ningún elemento.');
+                 return;
+             }
+ 
+             var data = {
+                 "_token": "{{ csrf_token() }}",
+                 "data": dataArray
+             };
+             
+             $.ajax({
+                 type: "POST",
+                 data: data,
+                 url: '{{ route("backoffice.declarations.destroy") }}',
+                 dataType: 'json',
+                 success: function(result) {
+                     if (result.hasOwnProperty('status') && result.status === 'success') {
+                         if (result.hasOwnProperty('deletedCount')) {
+                             if (result.deletedCount > 0) {
+                                 let message = `${result.deletedCount} elemento(s) eliminado(s) correctamente`;
+                                 new Notyf({ duration: 3000 }).success(message);
+ 
+                                 setTimeout(function() {
+                                     location.reload();
+                                 }, 3000);
+                             } else {
+                                 new Notyf({ duration: 3000 }).error("No se eliminó ningún elemento.");
+                             }
+                         }
+                     }
+                 },
+                 error: function(xhr, status, error) {
+                     console.error("Error Response:", xhr);
+                     console.error("Status:", status);
+                     console.error("Error:", error);
+                     new Notyf({
+                         duration: 3000
+                     }).error('Por favor, intente nuevamente');
+                 }
+             });
+         });
+     }
+ 
+     sendDataToEliminate(); // Configurar el evento click para eliminar
+ });
+ </script>
+ 
+
 @endsection
 
 @section('page_title')
@@ -196,7 +294,9 @@ Declaraciones
                 <div class="content-header">
                     <div class="table-actions">
                         <button class="btn-icon open-filter" type="button">Filtrar<i class="icon-filter"></i></button>
-                        <button class="btn-icon table-action d-none"><i class="icon-trash"></i></button>
+                        <button class="btn-icon table-action d-none deleteRows">
+                            <i class="icon-trash"></i>
+                        </button>
                         <div class="filter-container">
                             <div class="cs-field select">
                                 {!! Form::label('year', 'Año', ['class' => 'control-label'])
@@ -368,11 +468,11 @@ Declaraciones
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="cs-field" id="all-rows">
+                                    <div class="cs-field" id="all-rowsd">
                                         <input type="checkbox">
                                     </div>
                                 </th>
-                                <th class="sm-col">id</th>
+                               
                                 <th class="sm-col">Año</th>
                                 <th class="sm-col">Per&iacute;odo</th>
                                 <th class="align-top" width="25%">350 - Declaración de Rete Fuente</th>
@@ -389,10 +489,10 @@ Declaraciones
                             <tr>
                                 <td>
                                     <div class="cs-field">
-                                        <input type="checkbox" class="check_rows_cs_fileds">
+                                        <input type="checkbox" class="check_rows_cs_filedsd">
                                     </div>
                                 </td>
-                                <td>{{ $item->id }}</td>
+                                <td class="d-none">{{ $item->id }}</td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ getPeriod(1, $item->period) }}</td>
                                 <td>{{ $item->form }}</td>
@@ -434,7 +534,9 @@ Declaraciones
                 <div class="content-header">
                     <div class="table-actions">
                         <button class="btn-icon open-filter" type="button">Filtrar<i class="icon-filter"></i></button>
-                        <button class="btn-icon table-action d-none"><i class="icon-trash"></i></button>
+                        <button class="btn-icon table-action d-none deleteRows">
+                            <i class="icon-trash"></i>
+                        </button>
                         <div class="filter-container">
                             <div class="cs-field select">
                                 {!! Form::label('year', 'Año', ['class' => 'control-label']) !!}
@@ -605,7 +707,7 @@ Declaraciones
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="cs-field" id="all-rows">
+                                    <div class="cs-field" id="all-rowsd">
                                         <input type="checkbox">
                                     </div>
                                 </th>
@@ -667,7 +769,9 @@ Declaraciones
                 <div class="content-header">
                     <div class="table-actions">
                         <button class="btn-icon open-filter" type="button">Filtrar<i class="icon-filter"></i></button>
-                        <button class="btn-icon table-action d-none"><i class="icon-trash"></i></button>
+                        <button class="btn-icon table-action d-none deleteRows">
+                            <i class="icon-trash"></i>
+                        </button>
                         <div class="filter-container">
                             <div class="cs-field select">
                                 {!! Form::label('year', 'Año', ['class' => 'control-label'])
@@ -847,7 +951,7 @@ Declaraciones
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="cs-field" id="all-rows">
+                                    <div class="cs-field" id="all-rowsd">
                                         <input type="checkbox">
                                     </div>
                                 </th>

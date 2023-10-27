@@ -41,6 +41,9 @@ Route::get('/emissions/processed', 'EmissionsController@processed')->name('emiss
 Route::get('/emissions/declaration/{id}', 'EmissionsController@declaration')->name('emissions.declaration');
 Route::get('/emissions/send/{id}', 'EmissionsController@sendAlert')->name('emissions.send.alert');
 
+
+Route::post('/declarations/destroy', 'Delete_rows_controller@destroy')->name('declarations.destroy');
+
 Route::get('/declarations', 'DeclarationsController@index')->name('declarations.index');
 Route::post('/declarations/store', 'DeclarationsController@store')->name('declarations.store');
 

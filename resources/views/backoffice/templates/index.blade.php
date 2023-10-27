@@ -3,12 +3,15 @@
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.css')}}" />
 <link type="text/css" href="{{asset('https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css')}}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.6/css/selectize.bootstrap3.min.css" />
 @endsection
 
 @section('js')
 <script defer type="text/javascript" src="{{asset('https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js')}}"></script>
 <script defer type="text/javascript" src="{{asset('https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js')}}"></script>
 <script defer src="{{mix('/js/templates-datatable.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.6/js/standalone/selectize.min.js"></script>
     <script>
         $(function () {
             $('.div-select-city').hide();
@@ -28,6 +31,15 @@
             });
         })
     </script>
+<script>
+    $(document).ready(function() {
+        $('.companies-select-4').selectize({
+            create: true,
+            sortField: 'text'
+        });
+    });
+    </script>
+
 @endsection
 
 @section('page_title')
@@ -138,9 +150,9 @@
                         @endif
                     </div>
 
-                    <div class="cs-field field">
+                    <div class="cs-field field" >
                         {!! Form::label('period_type', 'Tipo de plantilla', ['class' => 'control-label']) !!}
-                        <div class="select-container">
+                        <div class="select-container" style="z-index: 0">
                             {!! Form::select('period_type', ["1" => "Mensual", "2" => "Bimestral", "3" => "Anual"], null, ['class' => 'form-control', 'placeholder' => '- Seleccione']) !!}
                             @if ($errors->has('period_type'))
                                 <p class="text-danger">{!! $errors->first('period_type') !!}</p>

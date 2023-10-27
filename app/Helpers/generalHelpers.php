@@ -240,13 +240,14 @@ function getDv($lines){
 function getSectional($lines){
     $line = $lines["2"];
 
-    // Se modifica la regex para detectar tildes y "ñ"
-    preg_match_all('/([a-zA-Z\s\x80-\xFF]+)/', $line, $matches, PREG_PATTERN_ORDER);
+    preg_match_all('/([0-9\s]+)$/', $line, $matches, PREG_PATTERN_ORDER);
 
-    if(is_array($matches) && count($matches[0])){
-       $line = implode(" ", $matches[0]);
-       $line = trim($line);
-       $line = removeAccents($line);
+    if(is_array($matches) && count($matches)){
+       $line = trim(preg_replace('/\s+/', '', $matches[0][0]));
+    }
+
+    if(strlen($line) === 1){
+        $line = "0{$line}";
     }
 
     return $line;
