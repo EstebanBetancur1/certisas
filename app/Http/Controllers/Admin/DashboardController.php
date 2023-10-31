@@ -38,11 +38,16 @@ class DashboardController extends Controller
         
         $reuest = DB::table('requests')->where('status', '=', 0);
 
+        $RequestCliets = DB::table('company_users')->where('status', '=', 0)->get();
+
     
         $customersCount = $customers->count();
         $assistantsCount = $assistants->count();
         $reuestCount = $reuest->count();
+        $RequestClietsCount = $RequestCliets->count();
 
-        return view('admin.dashboard.index', compact('customersCount', 'assistantsCount', 'reuestCount'));
+        return view('admin.dashboard.index', compact('customersCount', 'assistantsCount', 'reuestCount', 'RequestClietsCount'));
     }
+
+
 }

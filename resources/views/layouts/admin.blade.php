@@ -116,6 +116,12 @@
                                 </a>
                             </li>
 
+                            <li class="@if(in_array(request()->segment(2), ['request_company'])) open @endif">
+                                <a class="{{ (request()->segment(2) == 'request_company') ? "active" : "" }}" href="{{ route('admin.RequestCompany.index') }}">
+                                    <i class="fa fa-file-excel-o"></i> <span class="sidebar-mini-hide">Solicitud Empresas</span>
+                                </a>
+                            </li>
+
                             @if(isAdminOrHasPermissionOf('class_uses_recursive($class)-module'))
                             <li class="{{ (request()->segment(2) == 'users') ? "open" : "" }}">
                                 <a class="nav-submenu" data-toggle="nav-submenu" href="#">

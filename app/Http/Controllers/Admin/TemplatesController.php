@@ -268,4 +268,19 @@ class TemplatesController extends Controller
             'file'          => 'required',
         ]);
     }
+
+    
+    function RequestCompany() {
+        $results = DB::table('company_users as cu')
+        ->join('users as u', 'cu.user_id', '=', 'u.id')
+        ->join('companies as c', 'cu.company_id', '=', 'c.id')
+        ->where('cu.status', 0)
+        ->select('cu.user_id', 'cu.company_id', 'u.full_name', 'c.name', 'cu.status') 
+        ->get();
+
+    
+        return view('admin.RequestCompany.index', ['requests' => $results]);
+    }
+    
+
 }

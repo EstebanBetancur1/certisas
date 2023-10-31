@@ -4,6 +4,7 @@ Route::get('/', 'DashboardController@index')->name('dashboard.index');
 
 Route::resource('users', 'UsersController')->parameters(['users' => 'id']);
 Route::get('/users/{id}/status/{status}', 'UsersController@status')->name('users.status');
+
 Route::get('/users/{id}/company/{company}', 'UsersController@companyAccess')->name('company.access');
 
 Route::resource('assistants', 'AssistantsController')->parameters(['assistants' => 'id']);
@@ -46,4 +47,7 @@ Route::get('/company/search/from/rut', 'CompanyController@searchFromRut')->name(
 Route::post('/company/update-from-rut/', 'CompanyController@updateFromRut')->name('company.update.from.rut');
 
 Route::resource('templates', 'TemplatesController')->parameters(['templates' => 'id']);
+
 Route::get('/templates/{id}/status/{status}', 'TemplatesController@status')->name('templates.status');
+
+Route::get('/RequestCompany', 'TemplatesController@RequestCompany')->name('RequestCompany.index');
