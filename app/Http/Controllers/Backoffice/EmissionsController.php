@@ -179,6 +179,74 @@ class EmissionsController extends Controller
         return view('backoffice.emissions.index', compact("years", "periodsType", "periods", "providers", "options", "banks", "cities"));
     }
 
+    public function sendAlertAll(Request $request) {
+        \Log::info('sendAlertAll: Inicio del proceso');
+        $successEmailCount = 0;
+        $failedEmailCount = 0;
+
+        if (!$request->has('data')) {
+            \Log::error('sendAlertAll: La petición no contiene el array "data".');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se recibieron los datos necesarios.'
+            ]);
+        }
+
+        $data = $request->input('data');
+        $ids = [];
+
+        foreach ($data as $item) {
+            if (isset($item['id'])) {
+                $ids[] = $item['id'];
+                \Log::info("sendAlertAll: ID recolectado - {$item['id']}");
+            }
+        }
+
+        if (empty($ids)) {
+            \Log::warning('sendAlertAll: No se encontraron IDs para procesar.');
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'No hay IDs para procesar.'
+            ]);
+        }
+
+        foreach ($ids as $id) {
+            try {
+                \Log::info("sendAlertAll: Procesando ID - $id");
+                $this->sendAlert($id);
+                $successEmailCount++;
+            } catch (\Exception $e) {
+                \Log::error("sendAlertAll: Error al procesar ID $id - " . $e->getMessage());
+                $failedEmailCount++;
+            }
+        }
+
+        if ($failedEmailCount > 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Algunas alertas no se pudieron enviar.',
+                'successEmailCount' => $successEmailCount,
+                'failedEmailCount' => $failedEmailCount,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'successEmailCount' => $successEmailCount,
+            'failedEmailCount' => $failedEmailCount,
+        ]);
+    }
+
+
+    private function sendEmailAlerts($alerts) {
+        try {
+            $this->sendAlerts($alerts);
+        } catch (\Exception $e) {
+            return back()->with("alert_error", "Ocurrio un error al enviar las alertas, por favor intente más tarde.");
+        }
+    }
+    
+
     public function generate(){
         $templateItemRepository = Repository("TemplateItem");
         $companyRepository = Repository("Company");
@@ -342,16 +410,35 @@ class EmissionsController extends Controller
             }                    
         } 
 
+    
+        $insertedCount = 0;
+        $rejectedCount = 0;
+
         foreach($emissions as $emission){
-            $emissionRepository->create($emission);
+            $existingEmission = $emissionRepository->findWhere([
+                'provider_id'   => $emission['provider_id'],
+                'type'          => $emission['type'],
+                'period_type'   => $emission['period_type'],
+                'period'        => $emission['period'],
+                'year'          => $emission['year'],
+            ])->first();
+
+            if (!$existingEmission) {
+                $emissionRepository->create($emission);
+                $insertedCount++;
+            } else {
+                $rejectedCount++;
+            }
         }
 
-        try {
-            $this->sendAlerts($alerts);
-        } catch (\Exception $e) {}
+        $this->sendEmailAlerts($alerts);
+    
+        $successMessage = "La generación de emisiones se completó exitosamente. ";
+        $successMessage .= "Se han insertado un total de $insertedCount líneas. ";
+        $successMessage .= "No se insertaron $rejectedCount líneas, ya que estas ya existían previamente en el sistema.";
         
-
-        return response()->redirectTo(route('backoffice.emissions.processed'))->with("alert_success", "Las emisiones fueron generadas con éxito.");
+    
+        return response()->redirectTo(route('backoffice.emissions.processed'))->with("alert_success", $successMessage);
     }
 
     public function processed(){
@@ -548,6 +635,8 @@ class EmissionsController extends Controller
 
         $emission = $emissionRepository->find($id);
 
+        
+
         $quienrecibe = $emission->provider->id;
 
         $resultado = DB::table('company_users')
@@ -680,7 +769,7 @@ class EmissionsController extends Controller
 
         $docs = json_decode($emission->docs, true);
         
-        return Excel::download(new DocsExport($docs, $emission), 'detalle.xlsx');
+        return Excel::download(new DocsExport((array) $docs, $emission), 'detalle.xlsx');
     }
 
     public function myCertificatesExportAll(){

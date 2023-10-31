@@ -40,6 +40,7 @@ Route::get('/emissions/generate', 'EmissionsController@generate')->name('emissio
 Route::get('/emissions/processed', 'EmissionsController@processed')->name('emissions.processed');
 Route::get('/emissions/declaration/{id}', 'EmissionsController@declaration')->name('emissions.declaration');
 Route::get('/emissions/send/{id}', 'EmissionsController@sendAlert')->name('emissions.send.alert');
+Route::post('/emissions/send/all', 'EmissionsController@sendAlertAll')->name('emissions.send.alert.all');
 
 
 Route::post('/declarations/destroy', 'Delete_rows_controller@destroy')->name('declarations.destroy');

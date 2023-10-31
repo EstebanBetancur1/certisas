@@ -2,13 +2,16 @@
 
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.css"/>
-@endsection
-
-@section('js')
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js"></script>
-
     <style>
+        #list-items > thead > tr:nth-child(2) > th.cs-field.sorting_disabled > input[type=text]{
+            display: none;
+        }
+        .highlighted {
+        background-color: #0275d8 !important; 
+        color: white;                
+        }
+
+        <style>
         #list-items input[type='text']{
             color: #575757;
             background-color: #fff;
@@ -20,7 +23,12 @@
              border-radius:.2rem
         }
     </style>
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.css"/>
+@endsection
 
+@section('js')
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <script>
@@ -114,6 +122,110 @@
         }
 
     </script>
+
+<script>
+$(document).ready(function() {
+    var dataArray = []; // dataArray para la nueva tabla
+
+    // Función para actualizar la visibilidad del botón enviarSelects
+    function updateEnviarSelectsVisibility() {
+        if (dataArray.length > 1) {
+            $('#enviarSelects').removeClass('d-none');
+        } else {
+            $('#enviarSelects').addClass('d-none');
+        }
+    }
+
+    // Cambiar el estado de selección de todas las filas en la nueva tabla
+    $(document).on('click', '#all-rowsd', function() {
+        var checked = $(this).is(':checked');
+        dataArray = [];
+
+        $('#list-items tbody tr').each(function() {
+            var checkbox = $(this).find('td:first-child input[type="checkbox"]');
+            checkbox.prop('checked', checked);
+            $(this).toggleClass('highlighted', checked); // Agrega o remueve la clase 'highlighted'
+
+            if (checked) {
+                dataArray.push({ id: checkbox.val() }); // Aquí captura el valor del id
+            }
+        });
+
+        // Actualizar visibilidad de enviarSelects
+        updateEnviarSelectsVisibility();
+    });
+
+    // Cambiar el estado de selección de una fila individual en la nueva tabla
+    $(document).on('click', '.check_inpute', function() {
+        var checkbox = $(this);
+        var row = checkbox.closest('tr');
+        var id = checkbox.val();  // Obtener el id del checkbox
+        var isChecked = checkbox.is(':checked');
+
+        row.toggleClass('highlighted', isChecked); // Agrega o remueve la clase 'highlighted'
+
+        if (isChecked) {
+            dataArray.push({ id: id });
+        } else {
+            dataArray = dataArray.filter(item => item.id !== id);
+        }
+
+       
+        updateEnviarSelectsVisibility();
+    });
+
+    // Enviar los datos al servidor
+    function sendAlertAllItemsSelects(){
+        $('#enviarSelects').on('click', function(e){
+            e.preventDefault();
+    
+            if(dataArray.length === 0){
+                new Notyf({delay:3000}).error('Por favor, seleccione al menos un registro');
+                return;
+            }
+    
+            var data = {
+                "_token": "{{ csrf_token() }}",
+                "data": dataArray
+            };
+            
+    
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: '{{ route("backoffice.emissions.send.alert.all") }}',
+                dataType: 'json',
+                success: function(result) {
+                        if (result.hasOwnProperty('status')) {
+                            if (result.status === 'success') {
+                                let successMsg = 'Se han enviado ' + result.successEmailCount + ' alertas.';
+                                if (result.failedEmailCount > 0) {
+                                    successMsg += ' Falló el envío de ' + result.failedEmailCount + ' alertas.';
+                                }
+                                new Notyf({ delay: 3000 }).success(successMsg);
+                            } else if (result.status === 'error') {
+                                let errorMsg = 'Ocurrió un error al enviar las alertas.';
+                                if (result.hasOwnProperty('message')) {
+                                    errorMsg += ' Detalle: ' + result.message;
+                                }
+                                new Notyf({ delay: 3000 }).error(errorMsg);
+                            }
+                        } else {
+                            new Notyf({ delay: 3000 }).error('Por favor, intente nuevamente');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        new Notyf({ delay: 3000 }).error('Por favor, intente nuevamente');
+                    }
+            });
+        })
+    }
+    
+    sendAlertAllItemsSelects();
+});
+
+
+</script>
 @endsection
 
 @section('page_title')
@@ -192,7 +304,9 @@
                                     @if ($errors->has('city_id'))
                                         <p class="text-danger">{!! $errors->first('city_id') !!}</p>
                                     @endif
+
                                 </div>
+                               
                             </div>
 
                             <div class="col-lg-2">
@@ -207,6 +321,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-2 d-none" id="enviarSelects">
+                                <div class="form-group" style="padding-top: 32px">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-info">
+                                            Enviar seleccionados
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                           
+
 
                         </div>
                         {{ Form::close() }}
@@ -217,12 +342,18 @@
                             <table id="list-items" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th class="cs-field" >
+                                        <input type="checkbox" id="all-rowsd">
+                                    </th>
                                     <th width="10%">Nit</th>
                                     <th>Proveedor</th>
                                     <th width="15%">Periodo</th>
                                     <th width="9%">Opciones</th>
                                 </tr>
                                 <tr>
+                                    <th class="cs-field">
+                                        <span>asd</span>
+                                    </th>
                                     <th width="10%">Nit</th>
                                     <th>Proveedor</th>
                                     <th width="15%">Periodo</th>
@@ -234,6 +365,9 @@
                                 @if($items->count())
                                     @foreach($items as $item)
                                         <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" value="{{ $item->id }}" class="check_inpute">
+                                            </td>
                                             <td>{{ $item->provider_nit }}</td>
                                             <td>{{ $item->provider_name }}</td>
                                             <td>{{ ((int)$item->period_type === 1 || (int)$item->period_type === 2)?getPeriod($item->period_type, $item->period):"Todo el " . $item->year  }}</td>
@@ -251,7 +385,7 @@
 
                             </tbody>
                             
-                        </table>
+                            </table>
                         </div>
 
                     </div>

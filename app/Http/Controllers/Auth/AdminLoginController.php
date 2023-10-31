@@ -26,6 +26,7 @@ class AdminLoginController extends Controller
 
     public function login(Request $request)
     {
+
         $post = request()->all();
         $remember = false;
         
