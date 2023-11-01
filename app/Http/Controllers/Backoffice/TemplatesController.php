@@ -167,8 +167,6 @@ class TemplatesController extends Controller
     }
     
     
-    
-
     public function export(){
 
         $type = request()->input("type");
@@ -216,8 +214,7 @@ class TemplatesController extends Controller
         return $this->view("create", compact('companies', 'cities'));
     }
 
-    public function store()
-    {
+    public function store(){
         $errors = [];
 
         $post = request()->all();
@@ -253,6 +250,7 @@ class TemplatesController extends Controller
 
         try {
             $import->import($file,'local', \Maatwebsite\Excel\Excel::XLSX);
+            
         } catch (ValidationException $e) {
              $failures = $e->failures();
 
@@ -265,6 +263,7 @@ class TemplatesController extends Controller
                 ];
             }
         }
+        $duplicates = $import->getDuplicateDetails();
 
         if(count($errors)){
             return back()->with('errors', $errors)->with('alert_error', 'Se encontraron algunos errores en las filas');
@@ -274,11 +273,15 @@ class TemplatesController extends Controller
         $duplicados = $import->getDuplicateRows();
 
         $total = $registros + $duplicados;
+        
+        session(['duplicates' => $duplicates]);
 
         if ($registros == 0) {
             $templateRepository->delete($template->id);
         }
-        return response()->redirectTo(route("backoffice.templates.index"))->with('alert_success', 'Plantilla creada con '.$registros.' registros de '.$total.' posibles.');
+        return redirect()->route('backoffice.templates.index')
+        ->with('alert_success', 'Plantilla creada con '.$registros.' registros de '.$total.' posibles.')
+        ->with('duplicates', $duplicates);
     }
 
     public function edit($id)

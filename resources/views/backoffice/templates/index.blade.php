@@ -4,13 +4,26 @@
 <link rel="stylesheet" type="text/css" href="{{asset('https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.css')}}" />
 <link type="text/css" href="{{asset('https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css')}}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.6/css/selectize.bootstrap3.min.css" />
+
 @endsection
 
 @section('js')
 <script defer type="text/javascript" src="{{asset('https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js')}}"></script>
 <script defer type="text/javascript" src="{{asset('https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js')}}"></script>
 <script defer src="{{mix('/js/templates-datatable.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+  $('#example').DataTable({
+      "lengthChange": false,
+      language: {
+      "emptyTable": "No hay solicitudes de empresas",
+       url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+      },
+      });
+  });
 
+  </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.6/js/standalone/selectize.min.js"></script>
     <script>
         $(function () {
@@ -47,6 +60,7 @@
 @endsection
 
 @section('content')
+
 
     <div class="content">
         <div class="">
@@ -93,12 +107,13 @@
                                         <i class="fa fa-download"></i>
                                     </a>
 
-                                    <!--
-                                    <a href="" id="btn-delete" class="btn btn-secondary">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                    -->
-
+                                    @if(session('duplicates'))
+                                    <!-- Botón para activar el modal -->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#duplicatesModal" style="margin-left:52px;">
+                                            Ver duplicados
+                                        </button>
+                                        
+                                    @endif
                                 </div>
                             </div>
                             <button data-buttonmodal="import-template" class="btn-icon table-action modal-btn" type="button" rel="tooltip" data-placement="top" title="{!! $textCreateBtn !!}"><i class="icon-import-table"></i></button>
@@ -196,4 +211,55 @@
             </div>
         </div>
     </div>
+
+    
+@if(session('duplicates'))
+
+<!-- Modal -->
+<div class="modal fade" id="duplicatesModal" tabindex="-1" aria-labelledby="duplicatesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> 
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="duplicatesModalLabel">Detalles Duplicados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <table id="example" class="table table-striped" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>NIT</th>
+                      <th>Nombre</th>
+                      <th>Office</th>
+                      <th>base</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach(session('duplicates') as $duplicate)
+                  <tr>
+                      <td>{{ $duplicate['nit'] }}</td>
+                      <td>{{ $duplicate['name'] }}</td>
+                      <td>{{ $duplicate['doc'] }}</td>
+                      <td>{{ $duplicate['base'] }}</td>
+                  </tr>
+                  @endforeach
+              </tbody>
+              <tfoot>
+                  <tr>
+                      <th>NIT</th>
+                      <th>Nombre</th>
+                      <th>Office</th>
+                      <th>base</th>
+                  </tr>
+              </tfoot>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+@endif
 @endsection

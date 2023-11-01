@@ -595,7 +595,7 @@ class EmissionsController extends Controller
 
                 $query = $query->where("type",         "=", $emission->type);
                 $query = $query->where("status",       "=", 1);
-                $query = $query->where("company_id",   "=", session("companyID"));
+                // $query = $query->where("company_id",   "=", session("companyID"));
 
                 $query = $query->where(function ($query) use ($emission) {
                    $query->where('period', '=', $emission->period)->orWhere('period', '=', '-1');
@@ -611,7 +611,7 @@ class EmissionsController extends Controller
 
                 $query = $query->where("type",         "=", $emission->type);
                 $query = $query->where("status",       "=", 1);
-                $query = $query->where("company_id",   "=", session("companyID"));
+                // $query = $query->where("company_id",   "=", session("companyID"));
 
                 $months = explode(",", $emission->months);
 
@@ -622,7 +622,7 @@ class EmissionsController extends Controller
             })->get();
         }
 
-        
+        // dd($declarations);
 
         return PDF::loadView('backoffice.emissions.declaration', [
             'emission'          => $emission,

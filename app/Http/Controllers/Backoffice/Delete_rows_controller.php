@@ -32,6 +32,8 @@ class Delete_rows_controller extends Controller
     public function destroy(Request $request) {
         $data = $request->input('data'); // Esto será un array de arrays
     
+        // dd($data);
+        // die();
         $ids = array_column($data, 'id');
         $deletedCount = DB::table('declarations')->whereIn('id', $ids)->delete();
     

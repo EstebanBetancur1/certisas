@@ -183,6 +183,8 @@
          } else {
              dataArray = dataArray.filter(item => item.id !== id);
          }
+
+         console.log('dataArray', dataArray);
  
          // Mostrar u ocultar el botón de acción
          var isAnyChecked = $('.check_rows_cs_filedsd').is(':checked');
@@ -193,11 +195,12 @@
      function sendDataToEliminate() {
          $('.deleteRows').on('click', function(e) {
              e.preventDefault();
- 
+             
              if (dataArray.length === 0) {
                  new Notyf().error('No has seleccionado ningún elemento.');
                  return;
-             }
+                }
+           
  
              var data = {
                  "_token": "{{ csrf_token() }}",
@@ -727,9 +730,10 @@ Declaraciones
                             <tr>
                                 <td>
                                     <div class="cs-field">
-                                        <input type="checkbox" class="check_rows_cs_fileds">
+                                        <input type="checkbox" class="check_rows_cs_filedsd">
                                     </div>
                                 </td>
+                                <td class="d-none">{{ $item->id }}</td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ getPeriod(1, $item->period) }}</td>
                                 <td>{{ $item->form }}</td>
@@ -811,6 +815,7 @@ Declaraciones
                                 <a href="{{ route("backoffice.declarations.index", ['tab' => 's3']) }}"
                                     class="cs-btn secundary-action sm-btn">Limpiar filtro</a>
                                     <input type="hidden" name="tab" value="s3"/>
+                                    
                                 <button class="cs-btn btn-blue sm-btn ml-auto" type="submit">Filtrar</button>
                             </div>
                         </div>
@@ -970,9 +975,10 @@ Declaraciones
                             <tr>
                                 <td>
                                     <div class="cs-field">
-                                        <input type="checkbox" class="check_rows_cs_fileds">
+                                        <input type="checkbox" class="check_rows_cs_filedsd">
                                     </div>
                                 </td>
+                                <td class="d-none">{{ $item->id }}</td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ getPeriod(2, $item->period) }}</td>
                                 <td>{{ $item->declaration }}</td>
