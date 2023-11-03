@@ -40,12 +40,12 @@
                         {{ Form::open(['url' => route('admin.templates.index'), "class" => "", "method" => "get"]) }}
                         <div class="row" style="justify-content: space-between">
 
-                            {{-- <div class="col-lg-2">
+                            <div class="col-lg-2">
                                 <div class="form-group">
-                                    {!! Form::label('type', 'Tipo de impuestos', ['class' => 'control-label']) !!}
+                                    {!! Form::label('type', 'NIT', ['class' => 'control-label']) !!}
                                     {!! Form::text('nit', (request()->has("nit"))?request()->input("nit"):null, ['class' => 'form-control', 'placeholder' => '']) !!}
                                 </div>
-                            </div> --}}
+                            </div>
 
                             {{-- <div class="col-lg-2">
                                 <div class="form-group">
