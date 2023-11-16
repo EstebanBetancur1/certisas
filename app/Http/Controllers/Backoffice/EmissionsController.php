@@ -262,8 +262,12 @@ class EmissionsController extends Controller
         $c = request()->input("city");
         $pr = request()->input("provider");
             
-        $items = $this->getItems($y, $t, $pt, $p, $c);
 
+
+        
+        $items = $this->getItems($y, $t, $pt, $p, $c);
+        
+    
         $_companies = [];
 
         if($pr === "all"){
@@ -284,6 +288,8 @@ class EmissionsController extends Controller
             }
         }
 
+    
+
         // Busca la empresa y si no la encuentra la registra con el nit, nombre y estatus.
         foreach($_companies as $_nit => $_name){
             $_company = $companyRepository->findWhere(["nit" => $_nit])->first();
@@ -297,6 +303,8 @@ class EmissionsController extends Controller
             }
         }
 
+        
+
         $emissions = [];
         $agent = getAgent();
         $transactionAmount = 0;
@@ -304,6 +312,8 @@ class EmissionsController extends Controller
         $amountWithheld = 0;
 
         $alerts = [];
+
+  
 
         foreach($providers as $nit => $concepts){
             $provider = $companyRepository->findWhere(["nit" => $nit])->first();
@@ -343,12 +353,11 @@ class EmissionsController extends Controller
                     $months = array_replace($months, $this->getMonthshUsed($docs));
 
                     foreach($docs as $doc){
-
                         $concept = $doc->concept;
                                 
-                        $transactionAmount += round(($doc->base/$doc->rate))*100;
-                        $taxAmount += $doc->base;
-                        $amountWithheld += $doc->tax;
+                        $transactionAmount += round((float)$doc->base / (float)$doc->rate) * 100;
+                        $taxAmount += (float)$doc->base;
+                        $amountWithheld += (float)$doc->tax;
 
                         $itemsExcel[] = $doc->id;
                     }
@@ -409,8 +418,6 @@ class EmissionsController extends Controller
                 ];
             }                    
         } 
-
-    
         $insertedCount = 0;
         $rejectedCount = 0;
 

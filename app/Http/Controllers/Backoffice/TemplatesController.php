@@ -263,25 +263,27 @@ class TemplatesController extends Controller
                 ];
             }
         }
-        $duplicates = $import->getDuplicateDetails();
+        $errorsUpload = $import->getErrors();
 
         if(count($errors)){
             return back()->with('errors', $errors)->with('alert_error', 'Se encontraron algunos errores en las filas');
         }
 
         $registros = $import->getRowCount();
-        $duplicados = $import->getDuplicateRows();
+       
 
-        $total = $registros + $duplicados;
+        $total = $registros + count($errorsUpload);
         
-        session(['duplicates' => $duplicates]);
+        session(['errores' => $errorsUpload]);
 
         if ($registros == 0) {
             $templateRepository->delete($template->id);
         }
+        
+   
         return redirect()->route('backoffice.templates.index')
         ->with('alert_success', 'Plantilla creada con '.$registros.' registros de '.$total.' posibles.')
-        ->with('duplicates', $duplicates);
+        ->with('errorsUpload', $errorsUpload);
     }
 
     public function edit($id)
@@ -368,4 +370,23 @@ class TemplatesController extends Controller
             return new JsonResponse(['message' => __(':number records has been deleted.',['number' => $i])]);
         }
     }
+
+    public function descargarErrores()
+    {
+        // Recuperar los errores de la sesión con un valor predeterminado de array vacío
+        $errores = session('errores', []);
+    
+        // Convertir el array a un string con errores en líneas separadas
+        $contenido = implode("\r\n", $errores);
+    
+        // Devolver una respuesta que fuerce la descarga del contenido como un archivo .txt
+        session()->forget('errores');
+        return response()->make($contenido, 200, [
+            'Content-Type' => 'text/plain',
+            'Content-Disposition' => 'attachment; filename="errores.txt"',
+        ]);
+       
+    
+    }
+
 }

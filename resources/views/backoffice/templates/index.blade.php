@@ -107,12 +107,11 @@
                                         <i class="fa fa-download"></i>
                                     </a>
 
-                                    @if(session('duplicates'))
-                                    <!-- Botón para activar el modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#duplicatesModal" style="margin-left:52px;">
-                                            Ver duplicados
-                                        </button>
-                                        
+                                    @if(session('errores'))
+                                        <!-- Botón para descargar los errores -->
+                                        <a href="{{ route('backoffice.descargar.errores') }}" class="btn btn-danger" style="margin-left:40px;">
+                                            <i class="fa fa-download"></i>
+                                        </a>
                                     @endif
                                 </div>
                             </div>
@@ -212,54 +211,4 @@
         </div>
     </div>
 
-    
-@if(session('duplicates'))
-
-<!-- Modal -->
-<div class="modal fade" id="duplicatesModal" tabindex="-1" aria-labelledby="duplicatesModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> 
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="duplicatesModalLabel">Detalles Duplicados</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <table id="example" class="table table-striped" style="width:100%">
-              <thead>
-                  <tr>
-                      <th>NIT</th>
-                      <th>Nombre</th>
-                      <th>Office</th>
-                      <th>base</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  @foreach(session('duplicates') as $duplicate)
-                  <tr>
-                      <td>{{ $duplicate['nit'] }}</td>
-                      <td>{{ $duplicate['name'] }}</td>
-                      <td>{{ $duplicate['doc'] }}</td>
-                      <td>{{ $duplicate['base'] }}</td>
-                  </tr>
-                  @endforeach
-              </tbody>
-              <tfoot>
-                  <tr>
-                      <th>NIT</th>
-                      <th>Nombre</th>
-                      <th>Office</th>
-                      <th>base</th>
-                  </tr>
-              </tfoot>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-
-@endif
 @endsection

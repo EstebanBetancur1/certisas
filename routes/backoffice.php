@@ -21,6 +21,9 @@ Route::post('/request/access', 'RequestController@access')->name('request.access
 
 Route::resource('templates', 'TemplatesController')->parameters(['templates' => 'id']);
 
+Route::get('/descargar-errores', 'TemplatesController@descargarErrores')->name('descargar.errores');
+
+
 Route::get('/templates/{id}/status/{status}', 'TemplatesController@status')->name('templates.status');
 Route::get('/templates/export/excel', 'TemplatesController@export')->name('templates.export');
 

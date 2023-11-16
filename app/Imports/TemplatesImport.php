@@ -10,23 +10,25 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class TemplatesImport implements ToModel, WithValidation, WithHeadingRow{
     use Importable;
-
     protected $data = [];
     protected $template = null;
 
-    private $duplicateDetails = [];
+    private $errors = [];
     
     private $rows = 0;
-    private $duplicate = 0;
-
+    private $currentRow = 1;
+    
     function __construct($data, $template)
     {
         $this->data = $data;
         $this->template = $template;
     }
 
+    
     public function model(array $row)
     {
+        $this->currentRow++;
+
         $templateItemRepository = Repository("TemplateItem");
 
         $nit            = current($row);
@@ -42,17 +44,35 @@ class TemplatesImport implements ToModel, WithValidation, WithHeadingRow{
 
         if($nit){
 
-            //Validación para evitar registros duplicados que ya existan con el mismo nit y documento
-            $query = $templateItemRepository->where([
-                ['nit', 'LIKE', $nit],
-                ['doc', 'LIKE', $doc],
-                ['concept', 'LIKE', $concept],
-            ])->count();
+           
+            // Verificar si alguna de las columnas requeridas está vacía
+            if (empty($nit) || empty($name) || empty($doc) || empty($date) || empty($base) || empty($tax) || empty($rate) || empty($year_process) || empty($period_process) || empty($concept)) {
+                $this->errors[] = "Error en la línea {$this->currentRow}: Campos vacíos [Documento: {$doc}]";
+                return null;
+            }
 
+            // Verificar el formato de la fecha
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+                $this->errors[] = "Error en la línea {$this->currentRow}: Formato de fecha incorrecto [Documento: {$doc}]";
+                return null;
+            }
+
+            // Verificar registros duplicados
+            $query = $templateItemRepository->where([
+                ['nit', '=', $nit],
+                ['doc', '=', $doc],
+                ['concept', '=', $concept],
+            ])->exists();
+
+            if ($query) {
+                $this->errors[] = "Error en la línea {$this->currentRow}: Registro duplicado [Documento: {$doc}]";
+                return null;
+            }
+
+            
             if ($query < 1) {
                 
                 $this->rows++;
-
                 $row = $templateItemRepository->create([
                     'nit'           => $nit,
                     'name'          => $name,
@@ -73,20 +93,15 @@ class TemplatesImport implements ToModel, WithValidation, WithHeadingRow{
                     'city_id'       => $this->template->city_id,
                 ]);
             } else {
-                ++$this->duplicate;
+              
+                $this->errors[] = "Error en la línea {$this->currentRow}: Registro duplicado [Documento: {$doc}]";
+                return null;
 
-                $this->duplicateDetails[] = [
-                    'nit'           => $nit,
-                    'name'          => $name,
-                    'doc'           => $doc,
-                    'date'          => $date,
-                    'base'          => $base,
-                    'tax'           => $tax,
-                    'rate'          => $rate,
-                    'year_process'  => $year_process,
-                    'concept'       => $concept,
-                ];
+                
+
+               
             }
+           
         }
         return null;
     }
@@ -106,12 +121,8 @@ class TemplatesImport implements ToModel, WithValidation, WithHeadingRow{
         return $this->rows;
     }
 
-    public function getDuplicateRows(): int
+    public function getErrors(): array
     {
-        return $this->duplicate;
-    }
-
-    public function getDuplicateDetails(): array {
-        return $this->duplicateDetails;
+        return $this->errors;
     }
 }
