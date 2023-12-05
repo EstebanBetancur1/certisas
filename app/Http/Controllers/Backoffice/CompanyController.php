@@ -35,7 +35,7 @@ class CompanyController extends Controller
         $item = $companyRepository->findWhere(["id" => session("companyID")])->first();
 
         if(! $item){
-            abort(404);
+            return back()->with("alert_error", "Debes seleccionar una empresa para poder continuar.");
         }
 
         $sectionalID = $item->sectional;

@@ -289,8 +289,6 @@ class EmissionsController extends Controller
         }
 
     
-
-        // Busca la empresa y si no la encuentra la registra con el nit, nombre y estatus.
         foreach($_companies as $_nit => $_name){
             $_company = $companyRepository->findWhere(["nit" => $_nit])->first();
 
@@ -354,10 +352,19 @@ class EmissionsController extends Controller
 
                     foreach($docs as $doc){
                         $concept = $doc->concept;
+
+                        if((int)$doc->type === 2 || (int)$doc->type === 3){
+                            $transactionAmount += round((float)$doc->tax / (float)$doc->rate) * 100;
+                            $taxAmount += (float)$doc->base;
+                            $amountWithheld += (float)$doc->tax;
+                        }else{
+                            $transactionAmount += round((float)$doc->base / (float)$doc->tax) * 100;
+                            $taxAmount += (float)$doc->base;
+                            $amountWithheld += (float)$doc->tax;
+                        }
                                 
-                        $transactionAmount += round((float)$doc->base / (float)$doc->rate) * 100;
-                        $taxAmount += (float)$doc->base;
-                        $amountWithheld += (float)$doc->tax;
+
+                    
 
                         $itemsExcel[] = $doc->id;
                     }
@@ -375,6 +382,7 @@ class EmissionsController extends Controller
                         $totalAmountWithheld    += $amountWithheld;
                     }
                 }
+       
                 $numeroFormateado = (int)preg_replace('/[^0-9]/', '', $itemsExcel[0]);
 
                 $emissions[] = [
