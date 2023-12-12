@@ -225,9 +225,9 @@
 
 			@if((int)$emission->type === 1)
 				<td align="right">{!! priceFormat($concept->taxAmount) !!}</td>
+				<td align="right">{!! priceFormat($concept->amountWithheld) !!}</td>
 			@endif
-
-			<td align="right">{!! priceFormat($concept->amountWithheld) !!}</td>
+			<td align="right"> {{ $concept->amountWithheld }}</td>
 		</tr>
 		@endforeach
 

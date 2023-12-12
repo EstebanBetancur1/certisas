@@ -354,17 +354,15 @@ class EmissionsController extends Controller
                         $concept = $doc->concept;
 
                         if((int)$doc->type === 2 || (int)$doc->type === 3){
-                            $transactionAmount += round((float)$doc->tax / (float)$doc->rate) * 100;
-                            $taxAmount += (float)$doc->base;
-                            $amountWithheld += (float)$doc->tax;
-                        }else{
-                            $transactionAmount += round((float)$doc->base / (float)$doc->tax) * 100;
+                            $transactionAmount += round((float)$doc->tax / ((float)$doc->rate / 1000));
+                            $taxAmount += (float)$doc->tax;
+                            $amountWithheld += (float)$doc->rate;
+                        }else if((int)$doc->type === 1){
+                            $transactionAmount += round((float)$doc->base / ((float)$doc->rate / 100));
                             $taxAmount += (float)$doc->base;
                             $amountWithheld += (float)$doc->tax;
                         }
-                                
-
-                    
+                        
 
                         $itemsExcel[] = $doc->id;
                     }

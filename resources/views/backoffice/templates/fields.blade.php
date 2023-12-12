@@ -104,7 +104,7 @@
         <div class="cs-field field">
             {!! Form::label('type', 'Tipo de impuesto', ['class' => 'control-label']) !!}
             <div class="select-container">
-                {!! Form::select('type', ["1" => "Rete fuente", "3" => "Rete ICA", "2" => "Rete IVA"], null, [ 'placeholder' => '- Seleccione']) !!}
+                {!! Form::select('type', ["2" => "Rete fuente", "3" => "Rete ICA", "1" => "Rete IVA"], null, [ 'placeholder' => '- Seleccione']) !!}
             </div>
         </div>
 

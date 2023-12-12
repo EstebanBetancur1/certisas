@@ -331,34 +331,27 @@ function getEmail($lines){
     return "";
 }
 
-function getPhone($lines){
-    $line = $lines["10"];
+function getPhone($lines, $startLine = 10, $endLine = 11) {
+    $phoneRegex = '/^(\+\d{1,3}[- ]?)?\d{10}$/'; 
 
-    $line = trim(preg_replace('/\s+/', '#', $line));
-    $parts = explode("#", $line);
-
-    if(count($parts) === 1){
-        $line = $lines["11"];
-
-        $line = trim(preg_replace('/\s+/', '#', $line));
-        $parts = explode("#", $line);
-
-        if(count($parts)){
-            if(preg_match('/^([0-9]+)$/', $parts[0])){
-                return $parts[0];
-            }
+    for ($i = $startLine; $i <= $endLine; $i++) {
+        if (!isset($lines[$i])) {
+            continue;
         }
 
-    }elseif(count($parts) === 2){
-        return $parts[1];
-    }elseif(count($parts) === 3){
-        return $parts[1];
-    }elseif(count($parts) === 4){
-        return $parts[2];
+        $line = trim($lines[$i]);
+        $parts = preg_split('/\s+/', $line);
+
+        foreach ($parts as $part) {
+            if (preg_match($phoneRegex, $part)) {
+                return $part;
+            }
+        }
     }
 
     return "";
 }
+
 
 function getActivities($lines){
     $line = $lines["12"];
