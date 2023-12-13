@@ -353,15 +353,21 @@ class EmissionsController extends Controller
                     foreach($docs as $doc){
                         $concept = $doc->concept;
 
-                        if((int)$doc->type === 2 || (int)$doc->type === 3){
+                        
+                        if ((int)$doc->type === 3) {
                             $transactionAmount += round((float)$doc->tax / ((float)$doc->rate / 1000));
-                            $taxAmount += (float)$doc->tax;
-                            $amountWithheld += (float)$doc->rate;
-                        }else if((int)$doc->type === 1){
+                            $taxAmount += round((float)$doc->tax);
+                            $amountWithheld += round((float)$doc->tax);
+                        } else if ((int)$doc->type === 1) {
                             $transactionAmount += round((float)$doc->base / ((float)$doc->rate / 100));
-                            $taxAmount += (float)$doc->base;
-                            $amountWithheld += (float)$doc->tax;
+                            $taxAmount += round((float)$doc->base);
+                            $amountWithheld += round((float)$doc->tax);
+                        } else if ((int)$doc->type === 2) {
+                            $transactionAmount += round((float)$doc->tax / ((float)$doc->rate / 100));
+                            $taxAmount += round((float)$doc->base);
+                            $amountWithheld += round((float)$doc->tax);
                         }
+                        
                         
 
                         $itemsExcel[] = $doc->id;
