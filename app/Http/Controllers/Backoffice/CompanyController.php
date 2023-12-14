@@ -171,8 +171,10 @@ class CompanyController extends Controller
 
             $parser = new \Smalot\PdfParser\Parser();
             $pdf    = $parser->parseFile($path.$files["preview"]);
+       
 
             $text = $pdf->getText();
+      
 
             $data = parsePdf($text);
 
@@ -196,6 +198,7 @@ class CompanyController extends Controller
                 $company->responsibilities  = $data["responsibilities"];
                 $company->date              = $data["date"];
                 $company->file              = $files["name"];
+                $company->phone             = $data["phone"];
 
                 $company->save();
 

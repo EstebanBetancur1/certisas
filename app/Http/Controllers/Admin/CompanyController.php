@@ -90,7 +90,7 @@ class CompanyController extends Controller
         $item = $this->repository->find($id);
 
         if(! $item){
-            return response('Registro no encontrado', 404);
+            return back()->with("alert_error", "Registro no encontrado.");
         }
 
         $responsibilityRepository = repository("Responsibility");
@@ -116,7 +116,7 @@ class CompanyController extends Controller
         $item = $repository->find($id);
 
         if(! $item){
-            return response('Registro no encontrado', 404);
+            return back()->with("alert_error", "Registro no encontrado.");
         }
 
         $rules = $this->getModelRules();
@@ -266,14 +266,39 @@ class CompanyController extends Controller
 
     public function updateFromRut(){
         $post = request()->all();
+
+        if (!array_key_exists("user", $post) && !array_key_exists("rut", $post)) {
+            return back()->with("alert_error", "Debe seleccionar un usuario y un archivo.");
+        }
+    
+        // Verificar si no se recibió usuario
+        if (!array_key_exists("user", $post)) {
+            return back()->with("alert_error", "Debe seleccionar un usuario.");
+        }
+    
+        // Verificar si no se recibió rut
+        if (!array_key_exists("rut", $post)) {
+            return back()->with("alert_error", "Debe seleccionar un archivo.");
+        }
+
         $company = null;
 
         $userRepository = repository("User");
         $companyUserRepository = repository("CompanyUser");
 
-        $user = $userRepository->find((array_key_exists('user', $post))?$post["user"]:-1);
+        $user_id = array_key_exists('user', $post) ? $post['user'] : -1;
+        $user = $userRepository->find($user_id);
+        
+        if (!$user) {
+            return back()->with("alert_error", "Usuario no encontrado, por favor intente nuevamente.");
+        }
+    
 
         $file = $this->uploadFile("rut");
+
+        if(! $file){
+            return back()->with("alert_error", "Debe seleccionar un archivo.");
+        }
 
         if(array_key_exists("status", $file) && $file["status"] === true){
 
@@ -342,7 +367,6 @@ class CompanyController extends Controller
                     $company->responsibilities()->sync($responsibilities);
 
                     if($user){
-
                         $userCompany = $companyUserRepository->findWhere(["user_id" => $user->id, 'company_id' => $company->id])->first();
 
                         if(! $userCompany){

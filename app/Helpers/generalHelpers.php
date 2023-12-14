@@ -332,7 +332,7 @@ function getEmail($lines){
 }
 
 function getPhone($lines, $startLine = 10, $endLine = 11) {
-    $phoneRegex = '/^(\+\d{1,3}[- ]?)?\d{10}$/'; 
+    $phoneRegex = '/^(\+\d{1,3}[- ]?)?\d{7,10}$/';
 
     for ($i = $startLine; $i <= $endLine; $i++) {
         if (!isset($lines[$i])) {
