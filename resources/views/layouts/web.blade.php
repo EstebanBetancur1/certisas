@@ -31,7 +31,7 @@
 <body>
     <section id="login">
         <div class="container" id="c1">
-            <div class="row" style="height: 630px">
+            <div class="row" style="height: 650px">
                 <div class="col-md-7 p-0">
                     <div id="registro" class="login-wrapper">
                         <div class="login-logo">
@@ -78,8 +78,13 @@
             </div>
         </div>
         <div id="c2" class="container move2">
-            <div class="row overflow-hidden" style="height: 630px">
+            <div class="row overflow-hidden" style="height: 650px">
               <div class="col-md-7 p-0">
+                  <div class="w-100 d-flex justify-content-end p-2">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#SolicitarAcceso">
+                        Solicitar Acceso
+                      </button>
+                  </div>
                 <div id="registro" class="login-wrapper">
                   <div class="login-logo">
                     <img class="logo" src="images/logo.svg" alt="">
@@ -119,6 +124,7 @@
                         <a id="iniciar" href="#">{{__('Sign In')}}</a>
                         </div>
                     </form>
+                    
                 </div>
               </div>
 
@@ -156,12 +162,46 @@
                     <input type="email" id="recover-email" name="email" placeholder="{{__('E-Mail Address')}}" required>
                   </div>
                     @csrf
+                    
                     <div class="alert alert-info d-none"><span class="icofont-spin icofont-spinner-alt-2 me-2"></span><span>{{__('Loading...')}}</span></div>
                   <button class="cs-btn btn-blue ml-auto">{{__('Send')}}</button>
                 </form>
             </div>
         </div>
     </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="SolicitarAcceso" tabindex="-1" role="dialog" aria-labelledby="SolicitarAccesoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="  border-bottom: 0px !important;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="js-validation-signin px-30" id="signup-form" action="{{ route('auth.request.access') }}" method="post" enctype="multipart/form-data" novalidate="">
+                @csrf
+                <div class="cs-field field">
+                    <label for="signup-email" class="bold">Correo Electrónico</label>
+                    <input type="email" placeholder="Ingresa tu correo" id="signup-email" name="email" required="">
+                </div>
+                <div class="cs-field field">
+                    <label for="signup-nit">Nit</label>
+                    <input type="text" class="form-control" id="signup-nit" name="nit" placeholder="Ej: 123456789">
+                    <span class="text-info" role="alert"></span>
+                </div>
+                <div class="cs-field field text-center">
+                    <input class="" type="hidden" value="1" id="termsChecked" name="terms">
+                    <span>Al hacer clic en "Registrarme", aceptas nuestros <a class="text-primary" href="https://v4.certisaas.com/politicas_privacidad.pdf" target="_blank">Términos y Condiciones</a></span>
+                    <button type="submit" class="login-rut cs-btn btn-blue w-100">Solicitar</button>
+                </div>
+            </form>
+        </div>
+       
+      </div>
+    </div>
+  </div>
 
 <script src="{{ asset('global-vendor/notyf/notyf.js') }}"></script>
 

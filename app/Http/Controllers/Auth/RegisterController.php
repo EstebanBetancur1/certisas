@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Auth;
 use App\Models\User;
+use App\Models\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
@@ -9,12 +10,12 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use App\Mail\Welcome;
-use App\Http\Requests\RegisterRequest;
 use App\Mail\NewCompany;
+use App\Http\Requests\RegisterRequest;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
-use Illuminate\Validation\ValidationException;
 use Smalot\PdfParser\Parser;
 use function Composer\Autoload\includeFile;
 
@@ -55,6 +56,7 @@ class RegisterController extends Controller
      *
      * @return void
      */
+    
 
     protected $allowedTypesRegularExpression = '/(\.pdf)$/';
     protected $allowedTypes = ['pdf'];
@@ -68,6 +70,48 @@ class RegisterController extends Controller
 
         $this->userRepository = $userRepository;
     }
+
+    function requestAccess(){
+        $post = request()->all();
+
+        $user = $this->userRepository->findWhere(["email" => $post["email"]])->first();
+        $company = Company::where("nit", $post["nit"])->first();
+
+        if($user){
+            return new JsonResponse(['error' => __('Ya existe un usuario registrado con este correo.')]);
+        }
+
+        if(!$company){
+            return new JsonResponse(['error' => __('Empresa no encontrada.')]);
+        }
+
+        $user = $this->userRepository->create([
+            'full_name'         => '',
+            'email'             => $post['email'],
+            'password'          => '',
+            'phone'             => '',
+            'status'            => 2,
+            'type'              => 1,
+            'email_token'           => sha1(datetimeToken()),
+            'email_token_created'   => datetimeFormat(null),
+        ]);
+
+        if($user){
+            try {
+                Mail::to($post["email"])->send(new \App\Mail\RequestAccess($user, $company));
+                return new JsonResponse(['success' => __('Se ha enviado un correo con los pasos a seguir.')]);
+            } catch (\Exception $e) {
+                $user->delete();
+                return new JsonResponse(['error' => __('Tu correo no existe o esta mal escrito, porfavor verifica.')]);
+            }
+        }
+
+
+
+
+
+    }
+    
 
     public function register(RegisterRequest $request) {
         $file = $request->rut;
@@ -151,7 +195,7 @@ class RegisterController extends Controller
         $company = $companyRepository->findWhere(["id" => session("ID")])->first();
 
         if(! $company){
-            abort(404);
+            return back()->with("alert_error", "Empresa no encontrada, por favor intente nuevamente.");
         }
 
         return view("auth.request_register", compact("company"));
@@ -312,16 +356,14 @@ class RegisterController extends Controller
         return view('auth.email_confirmation', compact("result"));
     }
 
-    protected function validator(array $data)
-    {
+    protected function validator(array $data){
         return Validator::make($data, [
             'email'     => 'required|string|email|max:255|unique:users',
             'terms'     => 'required|in:1',
         ]);
     }
 
-    protected function validatorCompleteRegister(array $data)
-    {
+    protected function validatorCompleteRegister(array $data){
         return Validator::make($data, [
             'full_name' => 'required|string',
             'phone'     => 'required|numeric',
@@ -330,8 +372,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function validatorRegisterRequest(array $data)
-    {
+    protected function validatorRegisterRequest(array $data){
         return Validator::make($data, [
             'full_name'     => 'required|string',
             'email'         => 'required|email',
@@ -347,8 +388,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
-    {
+    protected function create(array $data){
         return User::create([
             'full_name'         => $data['full_name'],
             'email'             => $data['email'],
@@ -360,8 +400,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    private function uploadFile($file)
-    {
+    private function uploadFile($file){
         $originalName = $file->getClientOriginalName();
         // Sustituye todo lo que no sea alfanumerico por guion
         $newName = preg_replace('/[^\.a-zA-Z0-9]+/', '-', strtolower($originalName));
@@ -397,4 +436,6 @@ class RegisterController extends Controller
             unlink($pathAbsolute.'/'.$image);
         }
     }
+
+     
 }

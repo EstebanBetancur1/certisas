@@ -48,6 +48,11 @@ Route::prefix('user')->group(function () {
     Route::post('/request/registration', 'RegisterController@registerRequestCreate')->name('request.register.create');
     Route::get('/request/registration/finish', 'RegisterController@registerRequestFinish')->name('request.register.finish');
 
-
     Route::get('/request/email/confirmation', 'RegisterController@requestEmailConfirmation')->name('request.email.confirmation');
+
+    
 });
+
+/* Solicitar acceso desde el register */
+
+Route::post('/request/access', 'RegisterController@requestAccess')->name('request.access');
