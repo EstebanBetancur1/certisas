@@ -193,7 +193,7 @@
                 </div>
                 <div class="cs-field field text-center">
                     <input class="" type="hidden" value="1" id="termsChecked" name="terms">
-                    <span>Al hacer clic en "Registrarme", aceptas nuestros <a class="text-primary" href="https://v4.certisaas.com/politicas_privacidad.pdf" target="_blank">Términos y Condiciones</a></span>
+                    <span>Al hacer clic en "Solicitar", aceptas nuestros <a class="text-primary" href="https://v4.certisaas.com/politicas_privacidad.pdf" target="_blank">Términos y Condiciones</a></span>
                     <button type="submit" class="login-rut cs-btn btn-blue w-100">Solicitar</button>
                 </div>
             </form>

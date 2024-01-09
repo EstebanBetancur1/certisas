@@ -157,7 +157,7 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
 
         </div>
         <div class="col-md-3">
-            <h4 class="page-subtitle">Actividad reciente</h4>
+            <!-- <h4 class="page-subtitle">Actividad reciente</h4>
             <div class="activity-container">
                 <div class="recent-item">
                     <div class="icon-state">
@@ -302,7 +302,7 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
                     </div>
                     
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="col-md-3">
 

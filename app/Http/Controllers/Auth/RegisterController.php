@@ -11,13 +11,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\RedirectResponse;
 use App\Mail\Welcome;
 use App\Mail\NewCompany;
+use App\Mail\ConfirmRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use Smalot\PdfParser\Parser;
 use function Composer\Autoload\includeFile;
+use Illuminate\Support\Facades\DB;
+
 
 
 class RegisterController extends Controller
@@ -73,10 +77,10 @@ class RegisterController extends Controller
 
     function requestAccess(){
         $post = request()->all();
+        $requestRepository = repository("Request");
 
         $user = $this->userRepository->findWhere(["email" => $post["email"]])->first();
         $company = Company::where("nit", $post["nit"])->first();
-
         if($user){
             return new JsonResponse(['error' => __('Ya existe un usuario registrado con este correo.')]);
         }
@@ -90,24 +94,39 @@ class RegisterController extends Controller
             'email'             => $post['email'],
             'password'          => '',
             'phone'             => '',
-            'status'            => 2,
+            'status'            => 1,
             'type'              => 1,
+            'token_pre_register' => sha1(datetimeToken()),
             'email_token'           => sha1(datetimeToken()),
             'email_token_created'   => datetimeFormat(null),
         ]);
 
-        if($user){
-            try {
-                Mail::to($post["email"])->send(new \App\Mail\RequestAccess($user, $company));
-                return new JsonResponse(['success' => __('Se ha enviado un correo con los pasos a seguir.')]);
-            } catch (\Exception $e) {
-                $user->delete();
-                return new JsonResponse(['error' => __('Tu correo no existe o esta mal escrito, porfavor verifica.')]);
-            }
+
+        $token = $user->token_pre_register;
+
+        $companyData = [
+            'nit'   => $company->nit,
+            'name'  => $company->name,
+            'email' => $post['email'],
+            'token' => $token,
+        ];
+        $companyObject = json_decode(json_encode($companyData));
+
+        Mail::to($post['email'])->send(new ConfirmRequest($user, $companyObject));
+
+
+        $SendSolicitud = DB::table('company_users')->insert([
+            'user_id'       => $user->id,
+            'company_id'    => $company->id,
+            'type'          => 0,
+            'status'        => 0,
+        ]);
+
+        if($SendSolicitud){
+            return redirect()->back()->with('alert_success', 'Solicitud enviada correctamente, por favor revise su correo.');
+        }else{
+             return redirect()->back()->with('alert_error', 'Ocurrio un error, por favor intente nuevamente.');
         }
-
-
-
 
 
     }

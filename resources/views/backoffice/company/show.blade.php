@@ -133,7 +133,7 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
                             <td>{!! $item->activities !!}</td>
                         </tr>
 
-                        <tr>
+                        {{-- <tr>
                             <th>Responsabilidades</th>
                             <td>
                                 @php
@@ -144,7 +144,7 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
                                 <p>{!! $value !!}</p>
                                 @endforeach
                             </td>
-                        </tr>
+                        </tr> --}}
 
                     </tbody>
                 </table>
@@ -176,7 +176,7 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
         </div>
         <div class="col-md-12 col-xl-4 col-xxl-3 data-col">
            <div class="row">
-            <div class="col-md-6 col-lg-6 col-xl-12">
+            {{-- <div class="col-md-6 col-lg-6 col-xl-12">
                 <h4 class="page-subtitle">Actividad reciente</h4>
                 <div class="activity-container">
                     <div class="recent-item">
@@ -306,7 +306,24 @@ Administraci&oacute;n / <small style="color: #ffffff;">Informaci&oacute;n de la 
                         </div>
                    </div>
                 </div>
-            </div>
+            </div> --}}
+            <h4>Responsabilidades</h4>
+            <table class="table mb-0 table-bordered">
+                <tbody>
+                    <tr>
+                        <td>
+                            @php
+                            $data = ($item->responsibilities)?json_decode($item->responsibilities, true):[];
+                            @endphp
+
+                            @foreach($data as $code => $value)
+                            <p>{!! $value !!}</p>
+                            @endforeach
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
           </div>
         </div>
         <div class="col-md-4 col-xl-3 col-xxl-3 logo-col">

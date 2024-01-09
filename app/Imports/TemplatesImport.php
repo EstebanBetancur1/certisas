@@ -50,12 +50,18 @@ class TemplatesImport implements ToModel, WithValidation, WithHeadingRow{
                 $this->errors[] = "Error en la línea {$this->currentRow}: Campos vacíos [Documento: {$doc}]";
                 return null;
             }
+            $date = $this->convertExcelDateToTimestamp($date);
+         
 
             // Verificar el formato de la fecha
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
                 $this->errors[] = "Error en la línea {$this->currentRow}: Formato de fecha incorrecto [Documento: {$doc}]";
                 return null;
             }
+            
+            // Con esto:
+            // Convertir el número de Excel a una cadena de fecha
+
 
             // Verificar registros duplicados
             $query = $templateItemRepository->where([
@@ -124,5 +130,16 @@ class TemplatesImport implements ToModel, WithValidation, WithHeadingRow{
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    private function convertExcelDateToTimestamp($excelDate){
+    // La fecha de referencia para las fechas de Excel (1 de enero de 1900)
+    $excelBaseDate = strtotime('1899-12-31');
+
+    // Convierte el número de días a segundos y suma a la fecha de referencia
+    $timestamp = $excelBaseDate + ($excelDate - 1) * 24 * 60 * 60;
+
+    // Formatea el timestamp como una cadena de fecha (YYYY-MM-DD)
+    return date('Y-m-d', $timestamp);
     }
 }
